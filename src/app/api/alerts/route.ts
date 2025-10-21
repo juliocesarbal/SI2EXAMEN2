@@ -4,7 +4,7 @@ const apiBase = process.env.NEXT_PUBLIC_API_URL
 
 export async function GET(req: NextRequest) {
   const search = req.nextUrl.search
-  const res = await fetch(`${apiBase}/alerts${search}`, {
+  const res = await fetch(`${apiBase}/api/alerts${search}`, {
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',
     cache: 'no-store',

@@ -11,7 +11,7 @@ const resolveParams = async (context: Context): Promise<Params> =>
 export async function PATCH(req: NextRequest, context: Context) {
   const { id } = await resolveParams(context)
 
-  const res = await fetch(`${apiBase}/lotes/${id}`, {
+  const res = await fetch(`${apiBase}/api/lotes/${id}`, {
     method: 'PATCH',
     credentials: 'include',
     headers: {
@@ -32,7 +32,7 @@ export async function PATCH(req: NextRequest, context: Context) {
 export async function DELETE(req: NextRequest, context: Context) {
   const { id } = await resolveParams(context)
 
-  const res = await fetch(`${apiBase}/lotes/${id}`, {
+  const res = await fetch(`${apiBase}/api/lotes/${id}`, {
     method: 'DELETE',
     credentials: 'include',
     headers: {

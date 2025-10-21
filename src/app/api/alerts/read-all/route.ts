@@ -4,7 +4,7 @@ const apiBase = process.env.NEXT_PUBLIC_API_URL
 
 export async function PATCH(req: NextRequest) {
   const search = req.nextUrl.search
-  const res = await fetch(`${apiBase}/alerts/read-all${search}`, {
+  const res = await fetch(`${apiBase}/api/alerts/read-all${search}`, {
     method: 'PATCH',
     headers: {
       cookie: req.headers.get('cookie') ?? '',

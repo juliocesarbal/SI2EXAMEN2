@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 export async function POST(req: NextRequest) {
   const apiBase = process.env.NEXT_PUBLIC_API_URL
 
-  const res = await fetch(`${apiBase}/auth/logout`, {
+  const res = await fetch(`${apiBase}/api/auth/logout`, {
     method: 'POST',
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',

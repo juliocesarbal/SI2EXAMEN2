@@ -11,7 +11,7 @@ const resolveParams = async (context: Context): Promise<Params> =>
 export async function GET(_req: NextRequest, context: Context) {
   const { id } = await resolveParams(context)
 
-  const res = await fetch(`${apiBase}/productos/${id}/lotes`, {
+  const res = await fetch(`${apiBase}/api/productos/${id}/lotes`, {
     credentials: 'include',
     headers: {
       cookie: _req.headers.get('cookie') ?? '',
@@ -30,7 +30,7 @@ export async function GET(_req: NextRequest, context: Context) {
 export async function POST(req: NextRequest, context: Context) {
   const { id } = await resolveParams(context)
 
-  const res = await fetch(`${apiBase}/productos/${id}/lotes`, {
+  const res = await fetch(`${apiBase}/api/productos/${id}/lotes`, {
     method: 'POST',
     credentials: 'include',
     headers: {

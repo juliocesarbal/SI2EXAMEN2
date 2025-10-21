@@ -12,7 +12,7 @@ async function resolveParams(context: ParamsContext): Promise<Params> {
 export async function PATCH(req: NextRequest, context: ParamsContext) {
   const { id } = await resolveParams(context)
 
-  const res = await fetch(`${apiBase}/alerts/${id}/read`, {
+  const res = await fetch(`${apiBase}/api/alerts/${id}/read`, {
     method: 'PATCH',
     headers: {
       cookie: req.headers.get('cookie') ?? '',

@@ -8,7 +8,7 @@ const apiBase = process.env.NEXT_PUBLIC_API_URL;
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
 
-  const res = await fetch(`${apiBase}/bitacora`, {
+  const res = await fetch(`${apiBase}/api/bitacora`, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 // Lista con filtros (?userId=&estado=&desde=&hasta=&page=&perPage=)
 export async function GET(req: NextRequest) {
   const qs = req.nextUrl.searchParams.toString();
-  const res = await fetch(`${apiBase}/bitacora?${qs}`, {
+  const res = await fetch(`${apiBase}/api/bitacora?${qs}`, {
     method: "GET",
     headers: {
       cookie: req.headers.get("cookie") ?? "",

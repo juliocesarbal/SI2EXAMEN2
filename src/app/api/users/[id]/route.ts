@@ -8,7 +8,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<Params>
   const { id } = await context.params
   const body = await req.json().catch(() => ({}))
 
-  const r = await fetch(`${api}/users/${id}`, {
+  const r = await fetch(`${api}/api/users/${id}`, {
     method: 'PATCH',
     headers: {
       'content-type': 'application/json',
@@ -28,7 +28,7 @@ export async function PATCH(req: NextRequest, context: { params: Promise<Params>
 export async function DELETE(req: NextRequest, context: { params: Promise<Params> }) {
   const { id } = await context.params
 
-  const r = await fetch(`${api}/users/${id}`, {
+  const r = await fetch(`${api}/api/users/${id}`, {
     method: 'DELETE',
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',

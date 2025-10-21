@@ -12,8 +12,8 @@ export async function GET(request: NextRequest) {
     if (q) params.append('q', q)
     if (limit) params.append('limit', limit)
 
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
-    const url = `${backendUrl}/public/productos?${params.toString()}`
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+    const url = `${backendUrl}/api/public/productos?${params.toString()}`
 
     const response = await fetch(url, {
       method: 'GET',
