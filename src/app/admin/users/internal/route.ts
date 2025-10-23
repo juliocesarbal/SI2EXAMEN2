@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   const apiBase = process.env.NEXT_PUBLIC_API_URL
   const data = await req.json().catch(() => ({}))
 
-  const res = await fetch(`${apiBase}/users/internal`, {
+  const res = await fetch(`${apiBase}/api/users/internal`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',

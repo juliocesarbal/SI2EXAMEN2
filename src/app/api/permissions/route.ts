@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 const api = process.env.NEXT_PUBLIC_API_URL;
 
 export async function GET(req: NextRequest) {
-  const r = await fetch(`${api}/permissions`, {
+  const r = await fetch(`${api}/api/permissions`, {
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',
     cache: 'no-store',

@@ -6,7 +6,7 @@ type Ctx = { params: Promise<{ id: string }> };
 
 export async function GET(_: NextRequest, ctx: Ctx) {
   const { id } = await ctx.params;
-  const r = await fetch(`${api}/roles/${id}/permissions`, {
+  const r = await fetch(`${api}/api/roles/${id}/permissions`, {
     credentials: 'include',
     cache: 'no-store',
   });
@@ -18,7 +18,7 @@ export async function GET(_: NextRequest, ctx: Ctx) {
 
 export async function PUT(req: NextRequest, ctx: Ctx) {
   const { id } = await ctx.params;
-  const r = await fetch(`${api}/roles/${id}/permissions`, {
+  const r = await fetch(`${api}/api/roles/${id}/permissions`, {
     method: 'PUT',
     headers: {
       'content-type': 'application/json',

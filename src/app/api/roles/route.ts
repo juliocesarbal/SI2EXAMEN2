@@ -5,7 +5,7 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const withPerms = url.searchParams.get('withPerms') ?? 'false';
-  const r = await fetch(`${api}/roles?withPerms=${withPerms}`, {
+  const r = await fetch(`${api}/api/roles?withPerms=${withPerms}`, {
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',
     cache: 'no-store',
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const r = await fetch(`${api}/roles`, {
+  const r = await fetch(`${api}/api/roles`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
