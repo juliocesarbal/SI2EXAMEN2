@@ -83,7 +83,7 @@ export default function ReporteVentas() {
           <button type="button" onClick={onExportar} className="px-3 py-2 rounded border hover:bg-zinc-50 w-full md:w-auto">
             Exportar
           </button>
-          <button className="px-3 py-2 rounded bg-emerald-600 text-white hover:bg-emerald-700 w-full md:w-auto">
+          <button className="px-3 py-2 rounded bg-[#11212D] text-white hover:bg-[#06141B] w-full md:w-auto">
             Filtrar
           </button>
         </div>

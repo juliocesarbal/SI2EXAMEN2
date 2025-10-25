@@ -67,7 +67,7 @@ export default function UserMenu({ me }: Props) {
   return (
     <div ref={ref} className="relative">
       <button
-        className="flex items-center gap-2 rounded-full hover:bg-zinc-100 px-1.5 py-1"
+        className="flex items-center gap-2 rounded-full hover:bg-[#CCD0CF] px-1.5 py-1"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="menu"
@@ -77,14 +77,14 @@ export default function UserMenu({ me }: Props) {
           email={me.email}
           size={32}
         />
-        <span className="hidden sm:block text-sm text-zinc-700">
+        <span className="hidden sm:block text-sm text-[#11212D]">
           {me.firstName}
         </span>
         <svg
           width="16"
           height="16"
           viewBox="0 0 20 20"
-          className="text-zinc-500"
+          className="text-[#4A5C6A]"
         >
           <path d="M5 7l5 5 5-5" fill="currentColor" />
         </svg>
@@ -93,11 +93,11 @@ export default function UserMenu({ me }: Props) {
       {open && (
         <div
           role="menu"
-          className="z-50 absolute right-0 mt-2 w-48 rounded-xl border bg-white shadow-xl ring-1 ring-black/5 py-1 text-sm"
+          className="z-50 absolute right-0 mt-2 w-48 rounded-xl border border-[#9BA8AB] bg-white shadow-xl ring-1 ring-black/5 py-1 text-sm"
         >
           <Link
             href="/account"
-            className="block px-3 py-2 hover:bg-zinc-50"
+            className="block px-3 py-2 text-[#11212D] hover:bg-[#CCD0CF]"
             role="menuitem"
           >
             Mi cuenta
@@ -105,14 +105,14 @@ export default function UserMenu({ me }: Props) {
           {can("user.read") && (
             <Link
               href="/admin/users"
-              className="block px-3 py-2 hover:bg-zinc-50"
+              className="block px-3 py-2 text-[#11212D] hover:bg-[#CCD0CF]"
               role="menuitem"
             >
               Panel admin
             </Link>
           )}
           <button
-            className="w-full text-left px-3 py-2 hover:bg-zinc-50 text-rose-600"
+            className="w-full text-left px-3 py-2 hover:bg-[#CCD0CF] text-rose-600"
             onClick={onLogout}
             role="menuitem"
           >

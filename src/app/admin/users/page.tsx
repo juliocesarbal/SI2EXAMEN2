@@ -152,7 +152,7 @@ export default function AdminUsers() {
         <h1 className="text-xl font-semibold">Usuarios</h1>
         {can("user.create") && (
           <button
-            className="rounded-md bg-emerald-600 text-white px-3 py-2 hover:bg-emerald-700"
+            className="rounded-md bg-[#11212D] text-white px-3 py-2 hover:bg-[#06141B]"
             onClick={() => setOpenCreate(true)}
           >
             Nuevo usuario
@@ -186,7 +186,7 @@ export default function AdminUsers() {
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
                         u.status === "ACTIVE"
-                          ? "bg-emerald-50 text-emerald-700"
+                          ? "bg-[#CCD0CF] text-[#253745]"
                           : "bg-zinc-100 text-zinc-600"
                       }`}
                     >
@@ -240,7 +240,7 @@ export default function AdminUsers() {
               <span
                 className={`px-2 py-1 rounded-full text-xs shrink-0 ${
                   u.status === "ACTIVE"
-                    ? "bg-emerald-50 text-emerald-700"
+                    ? "bg-[#CCD0CF] text-[#253745]"
                     : "bg-zinc-100 text-zinc-600"
                 }`}
               >
@@ -311,7 +311,7 @@ export default function AdminUsers() {
       {can("user.create") && (
         <button
           onClick={() => setOpenCreate(true)}
-          className="md:hidden fixed bottom-4 right-4 h-12 w-12 rounded-full bg-emerald-600 text-white text-2xl leading-none shadow-lg"
+          className="md:hidden fixed bottom-4 right-4 h-12 w-12 rounded-full bg-[#11212D] text-white text-2xl leading-none shadow-lg"
           aria-label="Nuevo usuario"
         >
           +
@@ -500,7 +500,7 @@ function UserModal({
             Cancelar
           </button>
           <button
-            className="px-3 py-2 rounded bg-emerald-600 text-white disabled:opacity-60 hover:bg-emerald-700"
+            className="px-3 py-2 rounded bg-[#11212D] text-white disabled:bg-[#4A5C6A] hover:bg-[#06141B]"
             disabled={!canSubmit}
             onClick={submit}
           >

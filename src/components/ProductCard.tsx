@@ -76,9 +76,9 @@ export default function ProductCard({
   };
 
   return (
-    <div className="rounded-2xl border bg-white shadow-sm hover:shadow-lg transition overflow-hidden group flex flex-col">
+    <div className="rounded-2xl border border-[#9BA8AB] bg-white shadow-sm hover:shadow-lg transition overflow-hidden group flex flex-col">
       {/* Imagen */}
-      <div className="h-40 bg-zinc-100 flex items-center justify-center overflow-hidden">
+      <div className="h-40 bg-[#CCD0CF] flex items-center justify-center overflow-hidden">
         {imagen ? (
           <img
             src={imagen}
@@ -86,26 +86,26 @@ export default function ProductCard({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <span className="text-xs text-zinc-500">Imagen no disponible</span>
+          <span className="text-xs text-[#4A5C6A]">Imagen no disponible</span>
         )}
       </div>
 
       {/* Info */}
       <div className="p-4 flex flex-col flex-1 space-y-2">
-        <span className="text-xs text-emerald-700 font-medium bg-emerald-50 rounded px-2 py-0.5 self-start">
+        <span className="text-xs text-[#253745] font-medium bg-[#CCD0CF] rounded px-2 py-0.5 self-start">
           {marca || "Genérico"}
         </span>
 
-        <h3 className="text-sm font-semibold text-zinc-800 line-clamp-2 flex-1">
+        <h3 className="text-sm font-semibold text-[#11212D] line-clamp-2 flex-1">
           {nombre}
         </h3>
 
-        <p className="text-emerald-700 font-bold text-base">
+        <p className="text-[#253745] font-bold text-base">
           Bs. {precio.toFixed(2)}
         </p>
 
         <button
-          className="mt-auto w-full bg-emerald-600 text-white rounded-lg py-2 text-sm font-medium flex items-center justify-center gap-2 hover:bg-emerald-700 active:bg-emerald-800 transition disabled:opacity-50"
+          className="mt-auto w-full bg-[#11212D] text-white rounded-lg py-2 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#06141B] active:bg-[#06141B] transition disabled:bg-[#4A5C6A]"
           onClick={addToCarrito}
           disabled={loading}
         >

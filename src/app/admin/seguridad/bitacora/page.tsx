@@ -564,7 +564,7 @@ export default function BitacoraPage() {
                     const html = buildBitacoraReportHTML(rows, periodoStr, generadoStr)
                     downloadExcel(html)
                   }}
-                  className="px-3 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 text-sm"
+                  className="px-3 py-2 rounded-md bg-[#11212D] text-white hover:bg-[#06141B] text-sm"
                 >
                   Excel
                 </button>

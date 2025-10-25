@@ -53,28 +53,26 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-emerald-50 to-white overflow-hidden">
+    <div className="fixed inset-0 bg-gradient-to-br from-[#CCD0CF] to-[#9BA8AB] overflow-hidden">
       <div className="h-full w-full flex items-center justify-center px-4">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 space-y-6">
           {/* Header */}
           <div className="text-center space-y-2">
-            <span className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 shadow">
-              💊
-            </span>
-            <h1 className="text-2xl font-bold text-emerald-700 mt-2">
+
+            <h1 className="text-2xl font-bold text-[#11212D] mt-2">
               Bienvenido de nuevo
             </h1>
-            <p className="text-zinc-500 text-sm">
-              Ingresa a tu cuenta y gestiona tus pedidos fácilmente
+            <p className="text-[#4A5C6A] text-sm">
+              Ingresa a tu cuenta de Smart Sales y gestiona tus pedidos fácilmente
             </p>
           </div>
 
           {/* Formulario */}
           <form onSubmit={onSubmit} className="space-y-4">
             <label className="relative block">
-              <Mail className="absolute left-3 top-3 h-5 w-5 text-zinc-400" />
+              <Mail className="absolute left-3 top-3 h-5 w-5 text-[#4A5C6A]" />
               <input
-                className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                className="w-full pl-10 pr-3 py-2 border border-[#9BA8AB] rounded-lg focus:ring-2 focus:ring-[#253745] outline-none"
                 placeholder="Correo electrónico"
                 type="email"
                 autoComplete="email"
@@ -85,9 +83,9 @@ export default function LoginPage() {
             </label>
 
             <label className="relative block">
-              <Lock className="absolute left-3 top-3 h-5 w-5 text-zinc-400" />
+              <Lock className="absolute left-3 top-3 h-5 w-5 text-[#4A5C6A]" />
               <input
-                className="w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none"
+                className="w-full pl-10 pr-3 py-2 border border-[#9BA8AB] rounded-lg focus:ring-2 focus:ring-[#253745] outline-none"
                 placeholder="Contraseña"
                 type="password"
                 autoComplete="current-password"
@@ -100,34 +98,18 @@ export default function LoginPage() {
             {err && <p className="text-red-600 text-sm">{err}</p>}
 
             <button
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-2.5 rounded-lg font-semibold shadow disabled:opacity-60 transition-colors"
+              className="w-full bg-[#11212D] hover:bg-[#06141B] text-white py-2.5 rounded-lg font-semibold shadow disabled:bg-[#4A5C6A] transition-colors"
               disabled={loading || !email || !password}
             >
               {loading ? "Ingresando…" : "Entrar"}
             </button>
           </form>
 
-          {/* Extras */}
-          <div className="flex items-center gap-3">
-            <div className="flex-1 h-px bg-zinc-200" />
-            <span className="text-xs text-zinc-400">o continúa con</span>
-            <div className="flex-1 h-px bg-zinc-200" />
-          </div>
+         
 
-          <div className="flex gap-3 justify-center">
-            <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-zinc-50 transition">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              <span className="text-sm text-zinc-700">Cuenta segura</span>
-            </button>
-            <button className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-zinc-50 transition">
-              <Heart className="w-4 h-4 text-rose-500" />
-              <span className="text-sm text-zinc-700">Farmacia+</span>
-            </button>
-          </div>
-
-          <p className="text-sm text-center text-zinc-600">
+          <p className="text-sm text-center text-[#4A5C6A]">
             ¿No tienes cuenta?{" "}
-            <a className="text-emerald-700 hover:underline" href="/register">
+            <a className="text-[#253745] hover:text-[#11212D] hover:underline" href="/register">
               Crear cuenta
             </a>
           </p>

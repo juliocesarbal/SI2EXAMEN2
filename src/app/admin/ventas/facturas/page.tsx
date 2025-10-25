@@ -329,7 +329,7 @@ export default function FacturasAdmin() {
                       <span
                         className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${
                           f.estado === 'PAGADA'
-                            ? 'bg-emerald-100 text-emerald-700'
+                            ? 'bg-[#CCD0CF] text-[#253745]'
                             : 'bg-amber-100 text-amber-700'
                         }`}
                       >
@@ -341,7 +341,7 @@ export default function FacturasAdmin() {
                         <Link
                           href={f.facturaUrl}
                           target="_blank"
-                          className="text-emerald-600 hover:text-emerald-700 font-medium hover:underline transition-colors"
+                          className="text-[#253745] hover:text-[#253745] font-medium hover:underline transition-colors"
                         >
                           Ver factura
                         </Link>

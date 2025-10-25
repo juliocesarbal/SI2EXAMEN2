@@ -589,7 +589,7 @@ export default function ClientesAdmin() {
                 const html = buildReportHTML(clientes)
                 downloadExcel(html)
               }}
-              className="px-3 py-2 rounded-md bg-emerald-600 text-white hover:bg-emerald-700 text-sm"
+              className="px-3 py-2 rounded-md bg-[#11212D] text-white hover:bg-[#06141B] text-sm"
             >
               Excel
             </button>
@@ -776,7 +776,7 @@ export default function ClientesAdmin() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+                  className="px-4 py-2 bg-[#11212D] text-white rounded-md hover:bg-[#06141B]"
                 >
                   Actualizar
                 </button>

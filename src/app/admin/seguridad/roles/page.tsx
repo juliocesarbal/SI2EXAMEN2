@@ -349,13 +349,13 @@ export default function RolesPage() {
     <div className="p-4 md:p-6 space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Shield className="h-6 w-6 text-emerald-600" />
+          <Shield className="h-6 w-6 text-[#253745]" />
           <h1 className="text-xl md:text-2xl font-semibold">Roles & Permisos</h1>
         </div>
         <div className="flex gap-2">
           <button
             onClick={createRole}
-            className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-white hover:bg-emerald-700"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#11212D] px-3 py-2 text-white hover:bg-[#06141B]"
           >
             <ShieldPlus size={18} />
             Nuevo rol
@@ -390,14 +390,14 @@ export default function RolesPage() {
                 const count = r.permissions?.length ?? 0;
                 const active = selectedId === r.id;
                 return (
-                  <li key={r.id} className={`flex items-center justify-between px-3 py-2 ${active ? 'bg-emerald-50/60' : ''}`}>
+                  <li key={r.id} className={`flex items-center justify-between px-3 py-2 ${active ? 'bg-[#CCD0CF]/60' : ''}`}>
                     <button
                       onClick={() => selectRole(r.id, r)}
                       className="flex-1 text-left"
                     >
                       <div className="flex items-center gap-2">
-                        <ChevronRight size={16} className={`transition ${active ? 'rotate-90 text-emerald-700' : 'text-gray-400'}`} />
-                        <div className={`font-medium ${active ? 'text-emerald-800' : 'text-gray-800'}`}>{r.name}</div>
+                        <ChevronRight size={16} className={`transition ${active ? 'rotate-90 text-[#253745]' : 'text-gray-400'}`} />
+                        <div className={`font-medium ${active ? 'text-[#11212D]' : 'text-gray-800'}`}>{r.name}</div>
                         {r.description && (
                           <span className="text-xs text-gray-500 truncate max-w-[10rem]">{r.description}</span>
                         )}
@@ -549,7 +549,7 @@ export default function RolesPage() {
                                   <label
                                     key={p.id}
                                     className={`flex items-start gap-2 rounded-lg border px-3 py-2 hover:bg-gray-50 ${
-                                      checked.has(p.id) ? 'border-emerald-300 bg-emerald-50/40' : ''
+                                      checked.has(p.id) ? 'border-[#9BA8AB] bg-[#CCD0CF]/40' : ''
                                     }`}
                                   >
                                     <input
@@ -605,7 +605,7 @@ export default function RolesPage() {
                         <button
                           onClick={savePermissions}
                           disabled={savingPerms || !hasPendingChanges}
-                          className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-white disabled:opacity-50 hover:bg-emerald-700"
+                          className="inline-flex items-center gap-2 rounded-lg bg-[#11212D] px-4 py-2 text-white disabled:opacity-50 hover:bg-[#06141B]"
                         >
                           <Save size={16} />
                           {savingPerms ? 'Guardando...' : 'Guardar permisos'}

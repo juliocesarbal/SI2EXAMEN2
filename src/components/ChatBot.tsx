@@ -26,7 +26,7 @@ export default function ChatBot() {
       id: '1',
       role: 'assistant',
       content:
-        '¡Hola! Soy tu asistente virtual de farmacia. ¿En qué puedo ayudarte hoy? Puedes contarme tus síntomas y te recomendaré productos.',
+        '¡Hola! Soy tu asistente virtual de Smart Sales. ¿En qué puedo ayudarte hoy? Cuéntame qué productos buscas y te ayudaré a encontrarlos.',
     },
   ])
   const [inputMessage, setInputMessage] = useState('')
@@ -163,7 +163,7 @@ export default function ChatBot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full p-4 sm:p-5 shadow-lg transition-transform active:scale-95"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-[#11212D] hover:bg-[#06141B] text-white rounded-full p-4 sm:p-5 shadow-lg transition-transform active:scale-95"
           aria-label="Abrir chat"
         >
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 sm:w-7 sm:h-7">
@@ -175,18 +175,18 @@ export default function ChatBot() {
       {/* Ventana de chat (responsive y amigable) */}
       {isOpen && (
         <div
-          className="fixed z-50 right-3 left-3 bottom-3 sm:left-auto sm:right-6 sm:bottom-6 w-auto sm:w-96 max-w-md mx-auto h-[70vh] sm:h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col border border-zinc-200 overflow-hidden"
+          className="fixed z-50 right-3 left-3 bottom-3 sm:left-auto sm:right-6 sm:bottom-6 w-auto sm:w-96 max-w-md mx-auto h-[70vh] sm:h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col border border-[#9BA8AB] overflow-hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Chat de asistencia"
         >
           {/* Header */}
-          <div className="bg-emerald-600 text-white p-3 sm:p-4 rounded-t-2xl flex items-center justify-between">
+          <div className="bg-[#11212D] text-white p-3 sm:p-4 rounded-t-2xl flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">💊</div>
+              <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">💬</div>
               <div className="truncate">
-                <h3 className="font-semibold leading-tight truncate">Asistente Farmacia</h3>
-                <p className="text-[11px] sm:text-xs text-emerald-100">En línea</p>
+                <h3 className="font-semibold leading-tight truncate">Asistente Smart Sales</h3>
+                <p className="text-[11px] sm:text-xs text-[#CCD0CF]">En línea</p>
               </div>
             </div>
             <button
@@ -201,14 +201,14 @@ export default function ChatBot() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-zinc-50">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-[#CCD0CF]/20">
             {messages.map(message => (
               <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div
                   className={`max-w-[92%] sm:max-w-[80%] text-[13px] sm:text-sm leading-relaxed ${
                     message.role === 'user'
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-white border border-zinc-200'
+                      ? 'bg-[#253745] text-white'
+                      : 'bg-white border border-[#9BA8AB]'
                   } rounded-2xl p-2.5 sm:p-3 shadow-sm`}
                 >
                   <p className="whitespace-pre-wrap break-words">{message.content}</p>
@@ -216,26 +216,26 @@ export default function ChatBot() {
                   {/* Productos recomendados */}
                   {message.productos && message.productos.length > 0 && (
                     <div className="mt-2 sm:mt-3 space-y-2">
-                      <p className="text-[11px] sm:text-xs font-semibold text-emerald-700 border-t border-zinc-200 pt-2">
+                      <p className="text-[11px] sm:text-xs font-semibold text-[#253745] border-t border-[#9BA8AB] pt-2">
                         Productos recomendados:
                       </p>
                       <div className="grid grid-cols-1 gap-2">
                         {message.productos.map(producto => (
-                          <div key={producto.id} className="bg-zinc-50 border border-zinc-200 rounded-lg p-2">
-                            <p className="text-[12px] sm:text-xs font-semibold text-zinc-800 truncate">
+                          <div key={producto.id} className="bg-[#CCD0CF]/30 border border-[#9BA8AB] rounded-lg p-2">
+                            <p className="text-[12px] sm:text-xs font-semibold text-[#11212D] truncate">
                               {producto.nombre}
                             </p>
-                            <p className="text-[11px] sm:text-xs text-zinc-600 truncate">
+                            <p className="text-[11px] sm:text-xs text-[#4A5C6A] truncate">
                               {producto.marca} • {producto.categoria}
                             </p>
                             <div className="flex items-center justify-between gap-2 mt-2">
-                              <span className="text-sm font-bold text-emerald-700 shrink-0">
+                              <span className="text-sm font-bold text-[#253745] shrink-0">
                                 Bs. {producto.precio.toFixed(2)}
                               </span>
                               <button
                                 onClick={() => addToCarrito(producto.id)}
                                 disabled={addingToCart === producto.id}
-                                className="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs px-3 py-1 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="bg-[#11212D] hover:bg-[#06141B] text-white text-[11px] sm:text-xs px-3 py-1 rounded-md transition disabled:bg-[#4A5C6A] disabled:cursor-not-allowed"
                               >
                                 {addingToCart === producto.id ? '⏳' : '🛒 Añadir'}
                               </button>
@@ -251,11 +251,11 @@ export default function ChatBot() {
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-white border border-zinc-200 rounded-2xl p-3 shadow-sm">
+                <div className="bg-white border border-[#9BA8AB] rounded-2xl p-3 shadow-sm">
                   <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                    <div className="w-2 h-2 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-2 h-2 bg-[#4A5C6A] rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-[#4A5C6A] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-[#4A5C6A] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                   </div>
                 </div>
               </div>
@@ -265,7 +265,7 @@ export default function ChatBot() {
           </div>
 
           {/* Input */}
-          <div className="p-3 sm:p-4 border-t border-zinc-200 bg-white rounded-b-2xl">
+          <div className="p-3 sm:p-4 border-t border-[#9BA8AB] bg-white rounded-b-2xl">
             <form
               onSubmit={e => {
                 e.preventDefault()
@@ -277,15 +277,15 @@ export default function ChatBot() {
                 value={inputMessage}
                 onChange={e => setInputMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Escribe tus síntomas..."
-                className="flex-1 resize-none border border-zinc-300 rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-32 min-h-[40px]"
+                placeholder="¿Qué productos buscas?"
+                className="flex-1 resize-none border border-[#9BA8AB] rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#253745] max-h-32 min-h-[40px]"
                 rows={2}
                 disabled={isLoading}
               />
               <button
                 type="submit"
                 disabled={!inputMessage.trim() || isLoading}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-[#11212D] hover:bg-[#06141B] text-white px-4 py-2 rounded-lg transition disabled:bg-[#4A5C6A] disabled:cursor-not-allowed"
                 aria-label="Enviar mensaje"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">

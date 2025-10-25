@@ -143,41 +143,40 @@ export default function HomePage() {
   return (
     <div className="space-y-12 md:space-y-16">
       {/* HERO */}
-      <section className="border-y bg-gradient-to-b from-emerald-50 to-white">
+      <section className="border-y border-[#9BA8AB] bg-gradient-to-b from-[#CCD0CF] to-white">
         <Container className="py-10 md:py-14">
-          <div className="rounded-3xl bg-white shadow-md border border-emerald-100 p-8 md:p-10 text-center space-y-6">
-            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-zinc-900">
-              Todo para tu salud,{" "}
-              <span className="text-emerald-700">en un solo lugar</span>
+          <div className="rounded-3xl bg-white shadow-md border border-[#9BA8AB] p-8 md:p-10 text-center space-y-6">
+            <h1 className="text-4xl md:text-5xl font-extrabold leading-tight text-[#11212D]">
+              Todo lo que necesitas,{" "}
+              <span className="text-[#253745]">en un solo lugar</span>
             </h1>
-            <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
-              Medicamentos OTC, dermocosmética, bebés y bienestar. Envíos en 24
-              h dentro de la ciudad.
+            <p className="text-lg text-[#4A5C6A] max-w-2xl mx-auto">
+              Productos de calidad con envíos rápidos y seguros. Smart Sales, tu tienda online de confianza.
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="/productos"
-                className="rounded-xl bg-emerald-600 px-6 py-3 text-white font-semibold hover:bg-emerald-700 transition-all shadow-md"
+                className="rounded-xl bg-[#11212D] px-6 py-3 text-white font-semibold hover:bg-[#06141B] transition-all shadow-md"
               >
                 Comprar ahora
               </a>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 text-sm max-w-3xl mx-auto">
-              <div className="flex items-center justify-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl p-4 shadow-sm">
+              <div className="flex items-center justify-center gap-2 bg-[#CCD0CF] border border-[#9BA8AB] rounded-xl p-4 shadow-sm">
                 🚚{" "}
-                <span className="font-medium text-zinc-700">
+                <span className="font-medium text-[#11212D]">
                   Entrega rápida 24 h
                 </span>
               </div>
-              <div className="flex items-center justify-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl p-4 shadow-sm">
+              <div className="flex items-center justify-center gap-2 bg-[#CCD0CF] border border-[#9BA8AB] rounded-xl p-4 shadow-sm">
                 🔒{" "}
-                <span className="font-medium text-zinc-700">Pago seguro</span>
+                <span className="font-medium text-[#11212D]">Pago seguro</span>
               </div>
-              <div className="flex items-center justify-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl p-4 shadow-sm">
+              <div className="flex items-center justify-center gap-2 bg-[#CCD0CF] border border-[#9BA8AB] rounded-xl p-4 shadow-sm">
                 💬{" "}
-                <span className="font-medium text-zinc-700">
+                <span className="font-medium text-[#11212D]">
                   Asesoría por WhatsApp
                 </span>
               </div>
@@ -189,29 +188,29 @@ export default function HomePage() {
       {/* CATEGORÍAS */}
       <section>
         <Container className="space-y-6">
-          <h2 className="text-2xl font-bold">Explora categorías</h2>
+          <h2 className="text-2xl font-bold text-[#11212D]">Explora categorías</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <button
               onClick={() => setSelectedCategory("")}
               className={`group flex flex-col items-center p-6 rounded-2xl shadow-sm hover:shadow-lg transition ${
                 selectedCategory === ""
-                  ? "bg-emerald-50 border border-emerald-200"
-                  : "bg-white border"
+                  ? "bg-[#CCD0CF] border border-[#9BA8AB]"
+                  : "bg-white border border-[#9BA8AB]"
               }`}
             >
-              <div className="h-20 w-20 flex items-center justify-center rounded-full bg-emerald-100 mb-3 text-3xl">
+              <div className="h-20 w-20 flex items-center justify-center rounded-full bg-[#9BA8AB] mb-3 text-3xl">
                 📦
               </div>
               <span
                 className={`font-semibold ${
                   selectedCategory === ""
-                    ? "text-emerald-700"
-                    : "group-hover:text-emerald-700"
+                    ? "text-[#11212D]"
+                    : "group-hover:text-[#253745]"
                 }`}
               >
                 Todos
               </span>
-              <span className="text-sm text-zinc-500">Ver todos →</span>
+              <span className="text-sm text-[#4A5C6A]">Ver todos →</span>
             </button>
             {categorias.slice(0, 3).map((categoria) => (
               <button
@@ -219,23 +218,23 @@ export default function HomePage() {
                 onClick={() => setSelectedCategory(categoria.nombre)}
                 className={`group flex flex-col items-center p-6 rounded-2xl shadow-sm hover:shadow-lg transition ${
                   selectedCategory === categoria.nombre
-                    ? "bg-emerald-50 border border-emerald-200"
-                    : "bg-white border"
+                    ? "bg-[#CCD0CF] border border-[#9BA8AB]"
+                    : "bg-white border border-[#9BA8AB]"
                 }`}
               >
-                <div className="h-20 w-20 flex items-center justify-center rounded-full bg-emerald-100 mb-3 text-3xl">
+                <div className="h-20 w-20 flex items-center justify-center rounded-full bg-[#9BA8AB] mb-3 text-3xl">
                   🏷️
                 </div>
                 <span
                   className={`font-semibold ${
                     selectedCategory === categoria.nombre
-                      ? "text-emerald-700"
-                      : "group-hover:text-emerald-700"
+                      ? "text-[#11212D]"
+                      : "group-hover:text-[#253745]"
                   }`}
                 >
                   {categoria.nombre}
                 </span>
-                <span className="text-sm text-zinc-500">Ver más →</span>
+                <span className="text-sm text-[#4A5C6A]">Ver más →</span>
               </button>
             ))}
           </div>
@@ -245,7 +244,7 @@ export default function HomePage() {
       {/* PRODUCTOS DESTACADOS */}
       <section>
         <Container className="space-y-6">
-          <h2 className="text-2xl font-bold">
+          <h2 className="text-2xl font-bold text-[#11212D]">
             {selectedCategory
               ? `Productos de ${selectedCategory}`
               : "Productos destacados"}
@@ -255,9 +254,9 @@ export default function HomePage() {
               productos.map((producto) => (
                 <div
                   key={producto.id}
-                  className="rounded-2xl border bg-white shadow-sm hover:shadow-lg transition group overflow-hidden"
+                  className="rounded-2xl border border-[#9BA8AB] bg-white shadow-sm hover:shadow-lg transition group overflow-hidden"
                 >
-                  <div className="h-40 bg-zinc-100 rounded-t-2xl flex items-center justify-center overflow-hidden">
+                  <div className="h-40 bg-[#CCD0CF] rounded-t-2xl flex items-center justify-center overflow-hidden">
                     {producto.imageUrl ? (
                       <img
                         src={producto.imageUrl} // 👈 URL directa de S3
@@ -265,28 +264,28 @@ export default function HomePage() {
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />
                     ) : (
-                      <span className="text-zinc-400">Sin imagen</span>
+                      <span className="text-[#4A5C6A]">Sin imagen</span>
                     )}
                   </div>
                   <div className="p-4 space-y-2">
-                    <div className="text-xs text-zinc-500">
+                    <div className="text-xs text-[#4A5C6A]">
                       {producto.marca.nombre}
                     </div>
-                    <div className="font-semibold text-sm">
+                    <div className="font-semibold text-sm text-[#11212D]">
                       {producto.nombre}
                     </div>
                     {producto.descripcion && (
-                      <p className="text-xs text-zinc-600 line-clamp-2">
+                      <p className="text-xs text-[#4A5C6A] line-clamp-2">
                         {producto.descripcion}
                       </p>
                     )}
-                    <div className="text-emerald-700 font-bold text-lg mt-2">
+                    <div className="text-[#253745] font-bold text-lg mt-2">
                       Bs. {Number(producto.precio).toFixed(2)}
                     </div>
                     <button
                       onClick={() => addToCarrito(producto.id)}
                       disabled={addingToCart === producto.id}
-                      className="w-full mt-2 bg-emerald-600 text-white rounded-lg py-2 text-sm flex items-center justify-center gap-2 hover:bg-emerald-700 transition disabled:opacity-50"
+                      className="w-full mt-2 bg-[#11212D] text-white rounded-lg py-2 text-sm flex items-center justify-center gap-2 hover:bg-[#06141B] transition disabled:bg-[#4A5C6A]"
                     >
                       {addingToCart === producto.id
                         ? "⏳ Agregando..."
@@ -296,7 +295,7 @@ export default function HomePage() {
                 </div>
               ))
             ) : (
-              <div className="col-span-full text-center py-10 text-zinc-500">
+              <div className="col-span-full text-center py-10 text-[#4A5C6A]">
                 {selectedCategory
                   ? `No hay productos en "${selectedCategory}"`
                   : "No hay productos disponibles"}
@@ -310,24 +309,24 @@ export default function HomePage() {
       <section>
         <Container>
           <div className="grid gap-6 md:grid-cols-3">
-            <div className="rounded-2xl bg-gradient-to-b from-white to-emerald-50 p-6 shadow-sm">
-              <h3 className="font-semibold flex items-center gap-2 text-lg">
+            <div className="rounded-2xl bg-gradient-to-b from-white to-[#CCD0CF] p-6 shadow-sm border border-[#9BA8AB]">
+              <h3 className="font-semibold flex items-center gap-2 text-lg text-[#11212D]">
                 💬 Atención al cliente
               </h3>
-              <p className="text-sm text-zinc-600 mt-2">
+              <p className="text-sm text-[#4A5C6A] mt-2">
                 Consultas por chat o WhatsApp. Te ayudamos a elegir lo que
                 necesitas.
               </p>
             </div>
-            <div className="rounded-2xl bg-gradient-to-b from-white to-emerald-50 p-6 shadow-sm">
-              <h3 className="font-semibold flex items-center gap-2 text-lg">
+            <div className="rounded-2xl bg-gradient-to-b from-white to-[#CCD0CF] p-6 shadow-sm border border-[#9BA8AB]">
+              <h3 className="font-semibold flex items-center gap-2 text-lg text-[#11212D]">
                 🔒 Pagos seguros
               </h3>
-              <p className="text-sm text-zinc-600 mt-2">
+              <p className="text-sm text-[#4A5C6A] mt-2">
                 QR, tarjetas y contraentrega donde aplique.
               </p>
             </div>
-            <div className="rounded-2xl bg-gradient-to-b from-white to-emerald-50 p-6 shadow-sm">
+            <div className="rounded-2xl bg-gradient-to-b from-white to-[#CCD0CF] p-6 shadow-sm border border-[#9BA8AB]">
               <Newsletter />
             </div>
           </div>

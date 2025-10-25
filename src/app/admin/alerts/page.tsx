@@ -611,7 +611,7 @@ export default function AlertsPage() {
           {canManage && (
             <button
               onClick={handleMarkAll}
-              className="rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 hover:bg-emerald-100"
+              className="rounded-md border border-[#9BA8AB] bg-[#CCD0CF] px-3 py-1.5 text-sm font-medium text-[#253745] hover:bg-[#9BA8AB]"
             >
               Marcar todas como leidas
             </button>
@@ -726,7 +726,7 @@ export default function AlertsPage() {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={handleGenerarReporte}
-            className="flex items-center gap-2 rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700"
+            className="flex items-center gap-2 rounded-md bg-[#11212D] px-4 py-2 text-sm font-medium text-white hover:bg-[#06141B]"
           >
             <Printer size={18} />
             Generar reporte
@@ -756,7 +756,7 @@ export default function AlertsPage() {
               const html = buildReportHTML(alertsForReport);
               downloadExcel(html);
             }}
-            className="rounded-md bg-emerald-600 px-3 py-2 text-white hover:bg-emerald-700"
+            className="rounded-md bg-[#11212D] px-3 py-2 text-white hover:bg-[#06141B]"
           >
             Excel
           </button>
@@ -804,7 +804,7 @@ export default function AlertsPage() {
                 const dias = alert.venceEnDias ?? null;
                 const createdAt = new Date(alert.createdAt);
                 return (
-                  <tr key={alert.id} className={alert.leida ? "" : "bg-emerald-50/40"}>
+                  <tr key={alert.id} className={alert.leida ? "" : "bg-[#CCD0CF]/40"}>
                     <td className="px-4 py-3">
                       <div className="font-medium text-zinc-900">{alert.producto.nombre}</div>
                       <div className="text-xs text-zinc-500">
@@ -850,7 +850,7 @@ export default function AlertsPage() {
                       {alert.leida ? (
                         <span className="text-xs text-zinc-500">Leida</span>
                       ) : (
-                        <span className="text-xs font-medium text-emerald-600">Sin leer</span>
+                        <span className="text-xs font-medium text-[#253745]">Sin leer</span>
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -865,7 +865,7 @@ export default function AlertsPage() {
                         )}
                         <Link
                           href={`/admin/inventario/productos?highlight=${alert.producto.id}`}
-                          className="rounded-md border border-emerald-300 px-3 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-50"
+                          className="rounded-md border border-[#9BA8AB] px-3 py-1 text-xs font-medium text-[#253745] hover:bg-[#CCD0CF]"
                         >
                           Ajustar
                         </Link>

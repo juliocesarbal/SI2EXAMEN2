@@ -615,7 +615,7 @@ export default function ProductosAdmin() {
             resetForm()
             setShowModal(true)
           }}
-          className="bg-emerald-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-emerald-700"
+          className="bg-[#11212D] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#06141B]"
         >
           <Plus size={20} />
           Nuevo Producto
@@ -700,7 +700,7 @@ export default function ProductosAdmin() {
                           <div className="relative group flex-shrink-0">
                             <button
                               type="button"
-                              className="flex h-5 w-5 items-center justify-center rounded-full border border-emerald-200 text-emerald-600 transition hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                              className="flex h-5 w-5 items-center justify-center rounded-full border border-[#9BA8AB] text-[#253745] transition hover:bg-[#CCD0CF] focus:outline-none focus:ring-2 focus:ring-[#253745] focus:ring-offset-2"
                               aria-label="Ver descripcion del producto"
                             >
                               <Info size={12} />
@@ -727,7 +727,7 @@ export default function ProductosAdmin() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <span
                         className={`inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-semibold ${
-                          isLowStock ? 'bg-rose-50 text-rose-700' : 'bg-emerald-50 text-emerald-700'
+                          isLowStock ? 'bg-rose-50 text-rose-700' : 'bg-[#CCD0CF] text-[#253745]'
                         }`}
                       >
                         {stockActual}
@@ -1041,7 +1041,7 @@ export default function ProductosAdmin() {
               </div>
 
               {!editingProduct && (
-                <div className="rounded border border-dashed border-emerald-300 bg-emerald-50/60 p-4">
+                <div className="rounded border border-dashed border-[#9BA8AB] bg-[#CCD0CF]/60 p-4">
                   <label className="flex items-center gap-2 text-sm text-gray-700">
                     <input
                       type="checkbox"
@@ -1109,7 +1109,7 @@ export default function ProductosAdmin() {
                     />
                     <button
                       type="button"
-                      className="rounded-md bg-emerald-600 px-3 py-2 text-sm text-white hover:bg-emerald-700"
+                      className="rounded-md bg-[#11212D] px-3 py-2 text-sm text-white hover:bg-[#06141B]"
                       onClick={handleCreateLote}
                     >
                       Agregar lote
@@ -1137,7 +1137,7 @@ export default function ProductosAdmin() {
                               <td className="px-3 py-2 text-right space-x-2">
                                 <button
                                   type="button"
-                                  className="text-xs text-emerald-700 hover:underline"
+                                  className="text-xs text-[#253745] hover:underline"
                                   onClick={() => handleAdjustLote(lote)}
                                 >
                                   Ajustar
@@ -1174,7 +1174,7 @@ export default function ProductosAdmin() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700"
+                  className="px-4 py-2 bg-[#11212D] text-white rounded-md hover:bg-[#06141B]"
                 >
                   {editingProduct ? 'Actualizar' : 'Crear'}
                 </button>

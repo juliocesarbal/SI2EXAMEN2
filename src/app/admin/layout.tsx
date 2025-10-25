@@ -156,7 +156,7 @@ export default function AdminLayout({
         <p className="text-sm text-zinc-600">
           Tu usuario no tiene permisos para acceder al panel.
         </p>
-        <Link className="text-emerald-700" href="/">
+        <Link className="text-[#253745] hover:text-[#11212D]" href="/">
           Volver al inicio
         </Link>
       </div>
@@ -164,13 +164,13 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-white">
       {/* Header fijo */}
-      <header className="fixed inset-x-0 top-0 z-50 h-14 border-b bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
+      <header className="fixed inset-x-0 top-0 z-50 h-14 border-b border-[#9BA8AB] bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70">
         <div className="h-full px-4 flex items-center gap-3">
           {/* Toggle mobile */}
           <button
-            className="md:hidden p-2 rounded hover:bg-zinc-100"
+            className="md:hidden p-2 rounded hover:bg-[#CCD0CF]"
             onClick={() => setOpenMobile((v) => !v)}
             aria-label="Abrir menu"
             aria-expanded={openMobile}
@@ -185,17 +185,17 @@ export default function AdminLayout({
             </svg>
           </button>
 
-          <Link href="/admin" className="font-semibold tracking-tight">
+          <Link href="/admin" className="font-semibold tracking-tight text-[#11212D]">
             Panel Admin
           </Link>
-          <span className="ml-2 rounded-full bg-emerald-50 text-emerald-700 text-xs px-2 py-0.5">
-            Farmacia
+          <span className="ml-2 rounded-full bg-[#CCD0CF] text-[#253745] text-xs px-2 py-0.5">
+            Smart Sales
           </span>
 
           {/* Buscador top */}
-          <div className="hidden md:flex items-center gap-2 ml-6 flex-1 max-w-2xl rounded-lg border bg-white px-3 py-1.5 text-sm focus-within:ring-1 focus-within:ring-emerald-500">
+          <div className="hidden md:flex items-center gap-2 ml-6 flex-1 max-w-2xl rounded-lg border border-[#9BA8AB] bg-white px-3 py-1.5 text-sm focus-within:ring-1 focus-within:ring-[#253745]">
             <svg
-              className="h-4 w-4 text-zinc-500"
+              className="h-4 w-4 text-[#4A5C6A]"
               viewBox="0 0 24 24"
               fill="none"
             >
@@ -206,7 +206,7 @@ export default function AdminLayout({
               />
             </svg>
             <input
-              className="w-full outline-none placeholder:text-zinc-400"
+              className="w-full outline-none placeholder:text-[#4A5C6A]"
               placeholder="Buscar (usuarios, pedidos, productos...)"
             />
           </div>
@@ -215,7 +215,7 @@ export default function AdminLayout({
             {canAlertRead && (
               <button
                 onClick={() => router.push("/admin/alerts")}
-                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-emerald-700 hover:bg-emerald-50 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-[#253745] hover:bg-[#CCD0CF] focus:outline-none focus:ring-2 focus:ring-[#253745]"
                 aria-label="Ver alertas"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none">
@@ -241,18 +241,18 @@ export default function AdminLayout({
             <div className="relative">
               <button
                 onClick={() => setMenuOpen((v) => !v)}
-                className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-zinc-100"
+                className="flex items-center gap-2 rounded-full px-2 py-1 hover:bg-[#CCD0CF]"
                 aria-haspopup="menu"
                 aria-expanded={menuOpen}
               >
-                <div className="h-8 w-8 rounded-full bg-emerald-600 text-white grid place-items-center text-sm font-semibold">
+                <div className="h-8 w-8 rounded-full bg-[#11212D] text-white grid place-items-center text-sm font-semibold">
                   {initials}
                 </div>
-                <span className="hidden sm:block max-w-[180px] truncate text-sm text-zinc-700">
+                <span className="hidden sm:block max-w-[180px] truncate text-sm text-[#11212D]">
                   {me?.firstName} {me?.lastName}
                 </span>
                 <svg
-                  className="h-4 w-4 text-zinc-500"
+                  className="h-4 w-4 text-[#4A5C6A]"
                   viewBox="0 0 20 20"
                   fill="currentColor"
                 >
@@ -263,17 +263,17 @@ export default function AdminLayout({
               {menuOpen && (
                 <div
                   role="menu"
-                  className="absolute right-0 mt-2 w-48 rounded-xl border bg-white py-1 text-sm shadow-xl ring-1 ring-black/5 z-50"
+                  className="absolute right-0 mt-2 w-48 rounded-xl border border-[#9BA8AB] bg-white py-1 text-sm shadow-xl ring-1 ring-black/5 z-50"
                 >
                   <Link
                     href="/"
-                    className="block px-3 py-2 hover:bg-zinc-50"
+                    className="block px-3 py-2 text-[#11212D] hover:bg-[#CCD0CF]"
                     onClick={() => setMenuOpen(false)}
                   >
                     Ver sitio
                   </Link>
                   <button
-                    className="w-full px-3 py-2 text-left text-rose-600 hover:bg-zinc-50"
+                    className="w-full px-3 py-2 text-left text-rose-600 hover:bg-[#CCD0CF]"
                     onClick={async () => {
                       setMenuOpen(false);
                       await fetch("/api/auth/logout", {

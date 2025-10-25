@@ -114,23 +114,23 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
   return (
     <div className="h-full flex flex-col min-h-0">
       {/* Branding + buscador (fijos) */}
-      <div className="px-4 py-4 border-b shrink-0">
+      <div className="px-4 py-4 border-b border-[#9BA8AB] shrink-0">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-700 grid place-items-center text-white text-sm font-bold">
-            FA
+          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-[#253745] to-[#11212D] grid place-items-center text-white text-sm font-bold">
+            SS
           </div>
           <div>
-            <div className="text-sm font-semibold text-zinc-800">Farmacia · Admin</div>
-            <div className="text-xs text-zinc-500">Panel de control</div>
+            <div className="text-sm font-semibold text-[#11212D]">Smart Sales · Admin</div>
+            <div className="text-xs text-[#4A5C6A]">Panel de control</div>
           </div>
         </div>
         <div className="mt-3">
-          <label className="flex items-center gap-2 rounded-lg border bg-white px-3 py-2 text-sm focus-within:ring-1 focus-within:ring-emerald-500">
-            <svg className="h-4 w-4 text-zinc-500" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <label className="flex items-center gap-2 rounded-lg border border-[#9BA8AB] bg-white px-3 py-2 text-sm focus-within:ring-1 focus-within:ring-[#253745]">
+            <svg className="h-4 w-4 text-[#4A5C6A]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M21 21l-4.35-4.35M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" strokeWidth="1.6" />
             </svg>
             <input
-              className="w-full outline-none placeholder:text-zinc-400"
+              className="w-full outline-none placeholder:text-[#4A5C6A]"
               placeholder="Buscar en el panel…"
               aria-label="Buscar en el panel"
             />
@@ -147,16 +147,16 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
               <button
                 type="button"
                 onClick={() => toggle(sec.id)}
-                className="w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-sm hover:bg-zinc-50"
+                className="w-full flex items-center justify-between rounded-md px-3 py-2 text-left text-sm hover:bg-[#CCD0CF]"
                 aria-expanded={isOpen}
                 aria-controls={`sec-${sec.id}`}
               >
-                <span className="flex items-center gap-2 font-medium text-zinc-800">
-                  <span className="text-zinc-500">{sec.icon}</span>
+                <span className="flex items-center gap-2 font-medium text-[#11212D]">
+                  <span className="text-[#4A5C6A]">{sec.icon}</span>
                   {sec.title}
                 </span>
                 <svg
-                  className={`h-4 w-4 text-zinc-500 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                  className={`h-4 w-4 text-[#4A5C6A] transition-transform ${isOpen ? "rotate-180" : ""}`}
                   viewBox="0 0 20 20"
                   fill="currentColor"
                   aria-hidden="true"
@@ -181,15 +181,15 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
                           onClick={onNavigate}
                           className={`relative block rounded-md px-3 py-2 text-sm transition group ${
                             active
-                              ? "bg-emerald-50 text-emerald-700 border-l-2 border-emerald-600"
-                              : "hover:bg-zinc-50 text-zinc-700"
+                              ? "bg-[#CCD0CF] text-[#11212D] border-l-2 border-[#253745]"
+                              : "hover:bg-[#CCD0CF] text-[#4A5C6A]"
                           }`}
                           aria-current={active ? "page" : undefined}
                         >
                           {it.label}
                           <span
                             className={`absolute left-0 top-1/2 -translate-y-1/2 h-4 rounded-full transition-all ${
-                              active ? "w-0" : "w-0 group-hover:w-1 bg-zinc-200"
+                              active ? "w-0" : "w-0 group-hover:w-1 bg-[#9BA8AB]"
                             }`}
                           />
                         </Link>
@@ -204,8 +204,8 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
       </nav>
 
       {/* Footer fijo dentro de la columna */}
-      <div className="px-4 py-3 border-t text-xs text-zinc-500 shrink-0">
-        v0.1.0 · © {new Date().getFullYear()} Farmacia
+      <div className="px-4 py-3 border-t border-[#9BA8AB] text-xs text-[#4A5C6A] shrink-0">
+        v0.1.0 · © {new Date().getFullYear()} Smart Sales
       </div>
     </div>
   );

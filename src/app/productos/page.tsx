@@ -72,23 +72,22 @@ export default function ProductosPage() {
       <div className="max-w-7xl mx-auto px-6 space-y-12">
         {/* Header con buscador */}
         <div className="text-center space-y-2">
-          <h1 className="text-3xl font-extrabold text-zinc-900">
+          <h1 className="text-3xl font-extrabold text-[#11212D]">
             Nuestros productos
           </h1>
-          <p className="text-zinc-600 text-sm">
-            Explora nuestro catálogo de medicamentos, dermocosmética y
-            bienestar.
+          <p className="text-[#4A5C6A] text-sm">
+            Explora nuestro catálogo completo de productos de calidad.
           </p>
         </div>
 
         {/* Barra de búsqueda */}
         <div className="flex justify-center">
           <div className="relative w-full md:w-96">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#4A5C6A]">
               🔍
             </span>
             <input
-              className="pl-9 pr-3 py-2 w-full border rounded-full shadow-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+              className="pl-9 pr-3 py-2 w-full border border-[#9BA8AB] rounded-full shadow-sm focus:ring-2 focus:ring-[#253745] focus:border-[#253745] text-sm"
               placeholder="Buscar producto..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
@@ -126,15 +125,15 @@ export default function ProductosPage() {
                 <div key={cat.id} className="space-y-6">
                   {/* Encabezado de categoría */}
                   <div className="flex items-center justify-between relative">
-                    <h2 className="text-xl font-bold text-emerald-800 flex items-center gap-3">
-                      <span className="px-4 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full shadow-sm">
+                    <h2 className="text-xl font-bold text-[#11212D] flex items-center gap-3">
+                      <span className="px-4 py-1.5 bg-[#CCD0CF] border border-[#9BA8AB] rounded-full shadow-sm">
                         {cat.nombre}
                       </span>
-                      <span className="hidden md:block h-[2px] w-200 bg-gradient-to-r from-emerald-200 to-transparent rounded-full" />
+                      <span className="hidden md:block h-[2px] w-200 bg-gradient-to-r from-[#9BA8AB] to-transparent rounded-full" />
                     </h2>
                     <a
                       href={`/productos?cat=${encodeURIComponent(cat.nombre)}`}
-                      className="text-sm text-emerald-600 hover:underline"
+                      className="text-sm text-[#253745] hover:underline"
                     >
                       Ver más →
                     </a>
@@ -147,7 +146,7 @@ export default function ProductosPage() {
                         key={p.id}
                         productoId={p.id}
                         nombre={p.nombre}
-                        precio={p.precio ?? 0}
+                        precio={Number(p.precio) || 0}
                         imagen={p.imageUrl} // 👈 Aquí va directo desde S3
                         marca={p.marca?.nombre}
                       />
@@ -160,9 +159,8 @@ export default function ProductosPage() {
         )}
 
         {/* Nota legal */}
-        <p className="text-xs text-zinc-500 border-t pt-4 text-center">
-          ⚠️ Los medicamentos de venta bajo receta solo se expenden según
-          normativa vigente.
+        <p className="text-xs text-[#4A5C6A] border-t border-[#9BA8AB] pt-4 text-center">
+          ⚠️ Todos los productos cuentan con garantía y están verificados.
         </p>
       </div>
     </section>
