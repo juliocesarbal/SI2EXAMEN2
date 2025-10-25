@@ -6,8 +6,8 @@ import Footer from "@/components/Footer";
 import ChatBot from "@/components/ChatBot";
 
 export const metadata: Metadata = {
-  title: "Farmacia Salud+ | Tu salud primero",
-  description: "E-commerce de farmacia: medicamentos, dermo, bebé y más.",
+  title: "Smart Sales",
+  description: "Tu plataforma de gestión de ventas inteligente",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
