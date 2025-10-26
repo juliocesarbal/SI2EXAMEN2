@@ -466,7 +466,7 @@ export default function BitacoraPage() {
   const generadoStr = formatLongDate()
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-3.5 pl-3">
       {/* Header */}
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Bitácora</h1>
@@ -479,7 +479,7 @@ export default function BitacoraPage() {
               }
               setShowReportActions(true)
             }}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700"
+            className="bg-[#11212D] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700"
           >
             <Printer size={18} /> Generar reporte
           </button>

@@ -147,7 +147,7 @@ export default function AdminUsers() {
   if (!me || !can("user.read")) return <p>No autorizado.</p>;
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-6 pt-3.5 pl-3">
       <header className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Usuarios</h1>
         {can("user.create") && (

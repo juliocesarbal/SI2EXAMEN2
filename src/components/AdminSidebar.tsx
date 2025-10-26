@@ -9,46 +9,36 @@ type NavSection = { id: string; title: string; icon: JSX.Element; items: NavItem
 
 const IconBox = () => (
   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z" stroke="currentColor" strokeWidth="1.6"/>
-    <path d="M4 9h16" stroke="currentColor" strokeWidth="1.6"/>
+    <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7Z" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M4 9h16" stroke="currentColor" strokeWidth="1.6" />
   </svg>
 );
 const IconShield = () => (
   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M12 3l7 3v6c0 4.5-3 8.5-7 9-4-.5-7-4.5-7-9V6l7-3Z" stroke="currentColor" strokeWidth="1.6"/>
+    <path d="M12 3l7 3v6c0 4.5-3 8.5-7 9-4-.5-7-4.5-7-9V6l7-3Z" stroke="currentColor" strokeWidth="1.6" />
   </svg>
 );
 const IconCart = () => (
   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M3 4h2l2.4 12.3A2 2 0 0 0 9.4 18h7.9a2 2 0 0 0 2-1.6L21 8H6" stroke="currentColor" strokeWidth="1.6"/>
+    <path d="M3 4h2l2.4 12.3A2 2 0 0 0 9.4 18h7.9a2 2 0 0 0 2-1.6L21 8H6" stroke="currentColor" strokeWidth="1.6" />
     <circle cx="9.5" cy="20" r="1.5" fill="currentColor" />
     <circle cx="17.5" cy="20" r="1.5" fill="currentColor" />
   </svg>
 );
 const IconChart = () => (
   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M4 19V5M4 19h16" stroke="currentColor" strokeWidth="1.6"/>
-    <path d="M8 15l3-3 3 2 4-6" stroke="currentColor" strokeWidth="1.6"/>
+    <path d="M4 19V5M4 19h16" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M8 15l3-3 3 2 4-6" stroke="currentColor" strokeWidth="1.6" />
   </svg>
 );
 const IconCog = () => (
   <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" strokeWidth="1.6"/>
-    <path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3.7a7 7 0 0 0-1.7-1l-.4-2.4H11l-.4 2.4a7 7 0 0 0-1.7 1L6.6 6l-2 3.5L6.5 11a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-.7a7 7 0 0 0 1.7 1l.4 2.4h3.2l.4-2.4a7 7 0 0 0 1.7-1l2.3.7 2-3.5-2-1.5c.1-.3.1-.7.1-1Z" stroke="currentColor" strokeWidth="1.2"/>
+    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3.7a7 7 0 0 0-1.7-1l-.4-2.4H11l-.4 2.4a7 7 0 0 0-1.7 1L6.6 6l-2 3.5L6.5 11a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-.7a7 7 0 0 0 1.7 1l.4 2.4h3.2l.4-2.4a7 7 0 0 0 1.7-1l2.3.7 2-3.5-2-1.5c.1-.3.1-.7.1-1Z" stroke="currentColor" strokeWidth="1.2" />
   </svg>
 );
 
 const SECTIONS: NavSection[] = [
-  {
-    id: "inv",
-    title: "Gestionar Inventario",
-    icon: <IconBox />,
-    items: [
-      { label: "Productos", href: "/admin/inventario/productos" },
-      { label: "Alertas", href: "/admin/alerts" },
-      { label: "Proveedores", href: "/admin/inventario/proveedores" },
-    ],
-  },
   {
     id: "sec",
     title: "Gestionar Seguridad",
@@ -67,6 +57,8 @@ const SECTIONS: NavSection[] = [
       { label: "Clientes", href: "/admin/clientes" },
       { label: "Pedidos", href: "/admin/ventas/pedidos" },
       { label: "Facturas", href: "/admin/ventas/facturas" },
+      { label: "Productos", href: "/admin/inventario/productos" },
+      { label: "Alertas", href: "/admin/alerts" },
     ],
   },
   {
@@ -78,16 +70,7 @@ const SECTIONS: NavSection[] = [
       { label: "Reporte de inventario", href: "/admin/reportes/inventario" },
     ],
   },
-  {
-    id: "adv",
-    title: "Administración avanzada",
-    icon: <IconCog />,
-    items: [
-      { label: "Configuración", href: "/admin/avanzado/configuracion" },
-      { label: "Auditoría", href: "/admin/avanzado/auditoria" },
-    ],
-  },
-];
+ ];
 
 export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
@@ -179,18 +162,16 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
                         <Link
                           href={it.href}
                           onClick={onNavigate}
-                          className={`relative block rounded-md px-3 py-2 text-sm transition group ${
-                            active
+                          className={`relative block rounded-md px-3 py-2 text-sm transition group ${active
                               ? "bg-[#CCD0CF] text-[#11212D] border-l-2 border-[#253745]"
                               : "hover:bg-[#CCD0CF] text-[#4A5C6A]"
-                          }`}
+                            }`}
                           aria-current={active ? "page" : undefined}
                         >
                           {it.label}
                           <span
-                            className={`absolute left-0 top-1/2 -translate-y-1/2 h-4 rounded-full transition-all ${
-                              active ? "w-0" : "w-0 group-hover:w-1 bg-[#9BA8AB]"
-                            }`}
+                            className={`absolute left-0 top-1/2 -translate-y-1/2 h-4 rounded-full transition-all ${active ? "w-0" : "w-0 group-hover:w-1 bg-[#9BA8AB]"
+                              }`}
                           />
                         </Link>
                       </li>

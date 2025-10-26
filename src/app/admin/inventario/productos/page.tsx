@@ -607,7 +607,7 @@ export default function ProductosAdmin() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pt-5 pl-3.5">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-semibold">Gestion de Productos</h1>
         <button
