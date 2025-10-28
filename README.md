@@ -1,4 +1,3 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
@@ -36,8 +35,8 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 ## CU06 - Panel de alertas
 - Configura `NEXT_PUBLIC_API_URL=http://localhost:3001/api`.
-- La campana del header muestra el número de alertas sin leer y abre `/admin/alerts`.
+- La campana del header muestra el nÃºmero de alertas sin leer y abre `/admin/alerts`.
 - El modal de productos incluye un apartado para registrar/editar lotes; el stock actual se recalcula como la suma de sus lotes.
-- En `/admin/alerts` puedes filtrar por tipo, severidad, ventana de días, búsqueda y estado de lectura.
-- Marca alertas como leídas (permiso `alert.manage`) o salta al inventario para ajustar stock.
+- En `/admin/alerts` puedes filtrar por tipo, severidad, ventana de dÃ­as, bÃºsqueda y estado de lectura.
+- Marca alertas como leÃ­das (permiso `alert.manage`) o salta al inventario para ajustar stock.
 - El toggle de auto-refresco usa SSE (`/alerts/stream`) para actualizarse en tiempo casi real.
