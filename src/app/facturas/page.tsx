@@ -5,17 +5,33 @@ import Link from 'next/link'
 
 interface Factura {
   id: number
+  orden_id: number
+  stripe_id: string
   monto: number
   estado: string
-  facturaUrl: string | null
+  metodo: string
+  factura_url: string | null
+  created_at: string
   orden: {
     id: number
+    user_id: number
+    user_email: string
+    user_name: string
     total: number
-    user: {
-      firstName: string
-      lastName: string
-      email: string
-    }
+    estado: string
+    created_at: string
+    updated_at: string
+    items: Array<{
+      id: number
+      cantidad: number
+      precio_unitario: number
+      subtotal: number
+      producto: {
+        id: number
+        nombre: string
+        precio: number
+      }
+    }>
   }
 }
 
@@ -46,17 +62,14 @@ export default function FacturasCliente() {
 
   const fetchFacturas = async (email: string) => {
     try {
-      const backendUrl =
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
-      const response = await fetch(`${backendUrl}/pagos/facturas`, {
+      const response = await fetch('/api/pagos/facturas', {
+        credentials: 'include',
         cache: 'no-store',
       })
       if (response.ok) {
         const data = await response.json()
-        const filtradas = data.filter(
-          (factura: Factura) => factura.orden.user.email === email
-        )
-        setFacturas(filtradas)
+        // El backend ya filtra por usuario si no es admin
+        setFacturas(data)
       }
     } catch (error) {
       console.error('Error al cargar facturas:', error)
@@ -95,13 +108,19 @@ export default function FacturasCliente() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Orden #
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Fecha
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Monto
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Estado
                   </th>
                   <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Factura
+                    Detalles
                   </th>
                 </tr>
               </thead>
@@ -109,35 +128,36 @@ export default function FacturasCliente() {
                 {facturas.map((factura) => (
                   <tr key={factura.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="font-medium text-gray-900">
+                        #{factura.orden.id}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                      {new Date(factura.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-lg font-semibold text-gray-900">
-                        Bs. {factura.monto.toFixed(2)}
+                        Bs. {Number(factura.monto).toFixed(2)}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${
-                          factura.estado === 'PAGADA'
+                          factura.estado === 'completed'
                             ? 'bg-emerald-100 text-emerald-700'
                             : 'bg-amber-100 text-amber-700'
                         }`}
                       >
-                        {factura.estado}
+                        {factura.estado === 'completed' ? 'Pagado' : 'Pendiente'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {factura.facturaUrl ? (
-                        <Link
-                          href={factura.facturaUrl}
-                          target="_blank"
-                          className="text-emerald-600 hover:text-emerald-700 font-medium hover:underline transition-colors"
-                        >
-                          Ver factura
-                        </Link>
-                      ) : (
-                        <span className="text-gray-400 text-sm">
-                          No disponible
-                        </span>
-                      )}
+                      <Link
+                        href={`/facturas/${factura.id}`}
+                        className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
+                      >
+                        Ver detalles
+                      </Link>
                     </td>
                   </tr>
                 ))}

@@ -12,6 +12,7 @@ interface Producto {
   nombre: string;
   descripcion?: string;
   precio: number;
+  stockActual?: number;
   imageUrl?: string; // 👈 viene directo de S3
   marca: { nombre: string };
   categoria: { nombre: string };
@@ -282,15 +283,30 @@ export default function HomePage() {
                     <div className="text-[#253745] font-bold text-lg mt-2">
                       Bs. {Number(producto.precio).toFixed(2)}
                     </div>
-                    <button
-                      onClick={() => addToCarrito(producto.id)}
-                      disabled={addingToCart === producto.id}
-                      className="w-full mt-2 bg-[#11212D] text-white rounded-lg py-2 text-sm flex items-center justify-center gap-2 hover:bg-[#06141B] transition disabled:bg-[#4A5C6A]"
-                    >
-                      {addingToCart === producto.id
-                        ? "⏳ Agregando..."
-                        : "🛒 Agregar"}
-                    </button>
+                    {(producto.stockActual ?? 0) > 0 ? (
+                      <>
+                        <p className="text-xs text-green-600">Stock: {producto.stockActual}</p>
+                        <button
+                          onClick={() => addToCarrito(producto.id)}
+                          disabled={addingToCart === producto.id}
+                          className="w-full mt-2 bg-[#11212D] text-white rounded-lg py-2 text-sm flex items-center justify-center gap-2 hover:bg-[#06141B] transition disabled:bg-[#4A5C6A]"
+                        >
+                          {addingToCart === producto.id
+                            ? "⏳ Agregando..."
+                            : "🛒 Agregar"}
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-xs text-red-600 font-medium">Sin stock</p>
+                        <button
+                          className="w-full mt-2 bg-gray-400 text-white rounded-lg py-2 text-sm cursor-not-allowed"
+                          disabled
+                        >
+                          No disponible
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               ))

@@ -26,7 +26,7 @@ interface Lote {
   id: number
   codigo?: string | null
   cantidad: number
-  fechaVenc: string
+  fechaVenc?: string | null
 }
 
 interface Marca {
@@ -80,9 +80,9 @@ export default function ProductosAdmin() {
 
   const [lotes, setLotes] = useState<Lote[]>([])
   const [loadingLotes, setLoadingLotes] = useState(false)
-  const [lotForm, setLotForm] = useState({ codigo: '', cantidad: 0, fechaVenc: '' })
+  const [lotForm, setLotForm] = useState({ codigo: '', cantidad: 0 })
   const [initialLotEnabled, setInitialLotEnabled] = useState(false)
-  const [initialLot, setInitialLot] = useState({ codigo: '', cantidad: 0, fechaVenc: '' })
+  const [initialLot, setInitialLot] = useState({ codigo: '', cantidad: 0 })
 
   const [formData, setFormData] = useState({
     nombre: '',
@@ -356,15 +356,14 @@ export default function ProductosAdmin() {
 
       const savedProducto: Producto = await response.json()
 
-      if (!editingProduct && initialLotEnabled && initialLot.cantidad > 0 && initialLot.fechaVenc) {
-        const loteResponse = await fetch(`/api/productos/${savedProducto.id}/lotes`, {
+      if (!editingProduct && initialLotEnabled && initialLot.cantidad > 0) {
+        const loteResponse = await fetch(`/api/productos/${savedProducto.id}/lotes/create`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({
             codigo: initialLot.codigo || undefined,
             cantidad: initialLot.cantidad,
-            fechaVenc: initialLot.fechaVenc,
           }),
         })
         if (!loteResponse.ok) {
@@ -408,8 +407,8 @@ export default function ProductosAdmin() {
       imageKey: producto.imageKey || '',
     })
     setInitialLotEnabled(false)
-    setInitialLot({ codigo: '', cantidad: 0, fechaVenc: '' })
-    setLotForm({ codigo: '', cantidad: 0, fechaVenc: '' })
+    setInitialLot({ codigo: '', cantidad: 0 })
+    setLotForm({ codigo: '', cantidad: 0 })
     setShowModal(true)
     fetchLotes(producto.id)
   }
@@ -469,9 +468,9 @@ export default function ProductosAdmin() {
     setNewCategoriaName('')
     setNewUnidadData({ codigo: '', nombre: '' })
     setLotes([])
-    setLotForm({ codigo: '', cantidad: 0, fechaVenc: '' })
+    setLotForm({ codigo: '', cantidad: 0 })
     setInitialLotEnabled(false)
-    setInitialLot({ codigo: '', cantidad: 0, fechaVenc: '' })
+    setInitialLot({ codigo: '', cantidad: 0 })
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -483,26 +482,25 @@ export default function ProductosAdmin() {
 
   const handleCreateLote = async () => {
     if (!editingProduct) return
-    if (lotForm.cantidad <= 0 || !lotForm.fechaVenc) {
-      Swal.fire('Atencion', 'Define cantidad y fecha de vencimiento para el lote.', 'warning')
+    if (lotForm.cantidad <= 0) {
+      Swal.fire('Atencion', 'Define la cantidad para el lote.', 'warning')
       return
     }
 
     try {
-      const response = await fetch(`/api/productos/${editingProduct.id}/lotes`, {
+      const response = await fetch(`/api/productos/${editingProduct.id}/lotes/create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
           codigo: lotForm.codigo || undefined,
           cantidad: lotForm.cantidad,
-          fechaVenc: lotForm.fechaVenc,
         }),
       })
       if (!response.ok) {
         throw new Error(await response.text())
       }
-      setLotForm({ codigo: '', cantidad: 0, fechaVenc: '' })
+      setLotForm({ codigo: '', cantidad: 0 })
       await fetchLotes(editingProduct.id)
       await fetchProductos(false)
     } catch (error) {
@@ -1041,41 +1039,45 @@ export default function ProductosAdmin() {
               </div>
 
               {!editingProduct && (
-                <div className="rounded border border-dashed border-[#9BA8AB] bg-[#CCD0CF]/60 p-4">
-                  <label className="flex items-center gap-2 text-sm text-gray-700">
+                <div className="rounded border-2 border-dashed border-[#11212D] bg-[#CCD0CF]/60 p-4">
+                  <label className="flex items-center gap-2 text-sm font-medium text-gray-800">
                     <input
                       type="checkbox"
                       checked={initialLotEnabled}
                       onChange={(e) => setInitialLotEnabled(e.target.checked)}
+                      className="w-4 h-4"
                     />
-                    Registrar lote inicial
+                    📦 Registrar stock inicial (Lote)
                   </label>
                   {initialLotEnabled && (
-                    <div className="mt-3 grid gap-3 sm:grid-cols-3">
-                      <input
-                        type="text"
-                        placeholder="Codigo (opcional)"
-                        className="border rounded-md px-3 py-2 text-sm"
-                        value={initialLot.codigo}
-                        onChange={(e) => setInitialLot(prev => ({ ...prev, codigo: e.target.value }))}
-                      />
-                      <input
-                        type="number"
-                        min="0"
-                        className="border rounded-md px-3 py-2 text-sm"
-                        value={initialLot.cantidad}
-                        onChange={(e) => setInitialLot(prev => ({ ...prev, cantidad: parseInt(e.target.value || '0', 10) }))}
-                      />
-                      <input
-                        type="date"
-                        className="border rounded-md px-3 py-2 text-sm"
-                        value={initialLot.fechaVenc}
-                        onChange={(e) => setInitialLot(prev => ({ ...prev, fechaVenc: e.target.value }))}
-                      />
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1">Código lote (opcional)</label>
+                        <input
+                          type="text"
+                          placeholder="Ej: LOT-001"
+                          className="border rounded-md px-3 py-2 text-sm w-full"
+                          value={initialLot.codigo}
+                          onChange={(e) => setInitialLot(prev => ({ ...prev, codigo: e.target.value }))}
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-600 mb-1">Cantidad inicial *</label>
+                        <input
+                          type="number"
+                          min="1"
+                          placeholder="Ej: 100"
+                          className="border rounded-md px-3 py-2 text-sm w-full"
+                          value={initialLot.cantidad || ''}
+                          onChange={(e) => setInitialLot(prev => ({ ...prev, cantidad: parseInt(e.target.value || '0', 10) }))}
+                        />
+                      </div>
                     </div>
                   )}
                   <p className="mt-2 text-xs text-gray-500">
-                    El lote se creara automaticamente al guardar el producto.
+                    {initialLotEnabled
+                      ? '✓ El lote y stock se crearán automáticamente al guardar el producto.'
+                      : 'Si no registras un lote inicial, el producto quedará con stock en 0.'}
                   </p>
                 </div>
               )}
@@ -1086,26 +1088,21 @@ export default function ProductosAdmin() {
                     <h3 className="font-medium text-gray-800">Lotes del producto</h3>
                     <span className="text-xs text-gray-500">Stock total: {formData.stockActual}</span>
                   </div>
-                  <div className="grid gap-2 sm:grid-cols-4">
+                  <div className="grid gap-2 sm:grid-cols-3">
                     <input
                       type="text"
-                      placeholder="Codigo"
+                      placeholder="Codigo (opcional)"
                       className="border rounded-md px-3 py-2 text-sm"
                       value={lotForm.codigo}
                       onChange={(e) => setLotForm(prev => ({ ...prev, codigo: e.target.value }))}
                     />
                     <input
                       type="number"
-                      min="0"
+                      min="1"
+                      placeholder="Cantidad"
                       className="border rounded-md px-3 py-2 text-sm"
-                      value={lotForm.cantidad}
+                      value={lotForm.cantidad || ''}
                       onChange={(e) => setLotForm(prev => ({ ...prev, cantidad: parseInt(e.target.value || '0', 10) }))}
-                    />
-                    <input
-                      type="date"
-                      className="border rounded-md px-3 py-2 text-sm"
-                      value={lotForm.fechaVenc}
-                      onChange={(e) => setLotForm(prev => ({ ...prev, fechaVenc: e.target.value }))}
                     />
                     <button
                       type="button"
@@ -1124,7 +1121,6 @@ export default function ProductosAdmin() {
                           <tr>
                             <th className="px-3 py-2 text-left">Codigo</th>
                             <th className="px-3 py-2 text-left">Cantidad</th>
-                            <th className="px-3 py-2 text-left">Fecha venc.</th>
                             <th className="px-3 py-2 text-right">Acciones</th>
                           </tr>
                         </thead>
@@ -1133,7 +1129,6 @@ export default function ProductosAdmin() {
                             <tr key={lote.id}>
                               <td className="px-3 py-2 text-gray-800">{lote.codigo || 'Sin codigo'}</td>
                               <td className="px-3 py-2 text-gray-800">{lote.cantidad}</td>
-                              <td className="px-3 py-2 text-gray-800">{lote.fechaVenc}</td>
                               <td className="px-3 py-2 text-right space-x-2">
                                 <button
                                   type="button"

@@ -4,7 +4,7 @@ const api = process.env.NEXT_PUBLIC_API_URL
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const body = await req.json().catch(() => ({}))
-  const r = await fetch(`${api}/carrito/${id}`, {
+  const r = await fetch(`${api}api/carrito/${id}`, {
     method: 'PATCH',
     headers: {
       'content-type': 'application/json',
@@ -21,7 +21,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
 export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const r = await fetch(`${api}/carrito/${id}`, {
+  const r = await fetch(`${api}api/carrito/${id}/delete`, {
     method: 'DELETE',
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',

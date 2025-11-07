@@ -11,6 +11,7 @@ type Props = {
   precio: number;
   imagen?: string;
   marca?: string;
+  stockActual?: number;
 };
 
 export default function ProductCard({
@@ -19,6 +20,7 @@ export default function ProductCard({
   precio,
   imagen,
   marca,
+  stockActual = 0,
 }: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -65,7 +67,17 @@ export default function ProductCard({
         // Disparar evento para actualizar contador del carrito
         window.dispatchEvent(new Event("carrito:changed"));
       } else {
-        throw new Error("Error al agregar");
+        // Intentar obtener el mensaje de error del backend
+        let errorMessage = "No se pudo agregar al carrito";
+        try {
+          const errorData = await response.json();
+          if (errorData.message) {
+            errorMessage = errorData.message;
+          }
+        } catch {
+          // Si no se puede parsear, usar mensaje genérico
+        }
+        Swal.fire("Error", errorMessage, "error");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -104,13 +116,28 @@ export default function ProductCard({
           Bs. {precio.toFixed(2)}
         </p>
 
-        <button
-          className="mt-auto w-full bg-[#11212D] text-white rounded-lg py-2 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#06141B] active:bg-[#06141B] transition disabled:bg-[#4A5C6A]"
-          onClick={addToCarrito}
-          disabled={loading}
-        >
-          {loading ? "⏳ Agregando..." : "🛒 Agregar"}
-        </button>
+        {stockActual > 0 ? (
+          <div className="space-y-1">
+            <p className="text-xs text-green-600">Stock: {stockActual}</p>
+            <button
+              className="mt-auto w-full bg-[#11212D] text-white rounded-lg py-2 text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#06141B] active:bg-[#06141B] transition disabled:bg-[#4A5C6A]"
+              onClick={addToCarrito}
+              disabled={loading}
+            >
+              {loading ? "⏳ Agregando..." : "🛒 Agregar"}
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-1">
+            <p className="text-xs text-red-600 font-medium">Sin stock</p>
+            <button
+              className="mt-auto w-full bg-gray-400 text-white rounded-lg py-2 text-sm font-medium cursor-not-allowed"
+              disabled
+            >
+              No disponible
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

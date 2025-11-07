@@ -9,12 +9,16 @@ export async function GET(request: NextRequest, context: RouteContext) {
   const { id } = params
 
   try {
-    const backendUrl =
-      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/'
 
-    const response = await fetch(`${backendUrl}/pagos/factura/${id}`, {
+    const response = await fetch(`${backendUrl}api/pagos/factura/${id}`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'cookie': request.headers.get('cookie') ?? '',
+      },
+      credentials: 'include',
+      cache: 'no-store',
     })
 
     const data = await response.json()
@@ -27,3 +31,5 @@ export async function GET(request: NextRequest, context: RouteContext) {
     )
   }
 }
+
+export const runtime = 'nodejs'

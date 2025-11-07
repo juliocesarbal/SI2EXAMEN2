@@ -9,18 +9,33 @@ import { saveAs } from 'file-saver'
 
 interface Factura {
   id: number
+  orden_id: number
+  stripe_id: string
   monto: number
   estado: string
-  facturaUrl: string | null
+  metodo: string
+  factura_url: string | null
+  created_at: string
   orden: {
     id: number
+    user_id: number
+    user_email: string
+    user_name: string
     total: number
-    createdAt: string
-    user: {
-      firstName: string
-      lastName: string
-      email: string
-    }
+    estado: string
+    created_at: string
+    updated_at: string
+    items: Array<{
+      id: number
+      cantidad: number
+      precio_unitario: number
+      subtotal: number
+      producto: {
+        id: number
+        nombre: string
+        precio: number
+      }
+    }>
   }
 }
 
@@ -84,7 +99,7 @@ export default function FacturasAdmin() {
     const inicio = fechaInicio ? new Date(fechaInicio) : null
     const fin = fechaFin ? new Date(fechaFin) : null
     const filtradas = facturas.filter((f) => {
-      const d = new Date(f.orden.createdAt)
+      const d = new Date(f.created_at)
       if (inicio && d < inicio) return false
       if (fin && d > fin) return false
       return true
@@ -98,11 +113,11 @@ export default function FacturasAdmin() {
     doc.text('Reporte de Facturas', 14, 15)
     const tabla = filteredFacturas.map((f, idx) => [
       idx + 1,
-      `${f.orden.user.firstName} ${f.orden.user.lastName}`,
-      f.orden.user.email,
+      f.orden.user_name,
+      f.orden.user_email,
       `Bs. ${f.monto.toFixed(2)}`,
-      f.estado,
-      new Date(f.orden.createdAt).toLocaleDateString(),
+      f.estado === 'completed' ? 'Pagado' : 'Pendiente',
+      new Date(f.created_at).toLocaleDateString(),
     ])
     autoTable(doc, {
       startY: 25,
@@ -115,12 +130,12 @@ export default function FacturasAdmin() {
   // ✅ EXPORTAR EXCEL
   const exportarExcel = () => {
     const datos = filteredFacturas.map((f) => ({
-      Cliente: `${f.orden.user.firstName} ${f.orden.user.lastName}`,
-      Email: f.orden.user.email,
+      Cliente: f.orden.user_name,
+      Email: f.orden.user_email,
       Monto: f.monto,
-      Estado: f.estado,
-      Fecha: new Date(f.orden.createdAt).toLocaleDateString(),
-      Factura: f.facturaUrl ?? 'No disponible',
+      Estado: f.estado === 'completed' ? 'Pagado' : 'Pendiente',
+      Fecha: new Date(f.created_at).toLocaleDateString(),
+      Factura: f.factura_url ?? 'No disponible',
     }))
     const ws = XLSX.utils.json_to_sheet(datos)
     const wb = XLSX.utils.book_new()
@@ -142,8 +157,8 @@ export default function FacturasAdmin() {
 
     const resumen = {
       total: filteredFacturas.reduce((acc, f) => acc + f.monto, 0),
-      pagadas: filteredFacturas.filter((f) => f.estado === 'PAGADA').length,
-      pendientes: filteredFacturas.filter((f) => f.estado !== 'PAGADA').length,
+      pagadas: filteredFacturas.filter((f) => f.estado === 'completed').length,
+      pendientes: filteredFacturas.filter((f) => f.estado !== 'completed').length,
       cantidad: filteredFacturas.length,
     }
 
@@ -152,11 +167,11 @@ export default function FacturasAdmin() {
         (f, idx) => `
       <tr>
         <td>${idx + 1}</td>
-        <td>${f.orden.user.firstName} ${f.orden.user.lastName}</td>
-        <td>${f.orden.user.email}</td>
-        <td>${new Date(f.orden.createdAt).toLocaleDateString()}</td>
+        <td>${f.orden.user_name}</td>
+        <td>${f.orden.user_email}</td>
+        <td>${new Date(f.created_at).toLocaleDateString()}</td>
         <td style="text-align:right;">Bs. ${f.monto.toFixed(2)}</td>
-        <td>${f.estado}</td>
+        <td>${f.estado === 'completed' ? 'Pagado' : 'Pendiente'}</td>
       </tr>
     `
       )
@@ -314,40 +329,35 @@ export default function FacturasAdmin() {
                 {filteredFacturas.map((f) => (
                   <tr key={f.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                      {f.orden.user.firstName} {f.orden.user.lastName}
+                      {f.orden.user_name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {f.orden.user.email}
+                      {f.orden.user_email}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                      {new Date(f.orden.createdAt).toLocaleDateString()}
+                      {new Date(f.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                      Bs. {f.monto.toFixed(2)}
+                      Bs. {Number(f.monto).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-flex px-3 py-1 rounded-full text-sm font-medium ${
-                          f.estado === 'PAGADA'
-                            ? 'bg-[#CCD0CF] text-[#253745]'
+                          f.estado === 'completed'
+                            ? 'bg-emerald-100 text-emerald-700'
                             : 'bg-amber-100 text-amber-700'
                         }`}
                       >
-                        {f.estado}
+                        {f.estado === 'completed' ? 'Pagado' : 'Pendiente'}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      {f.facturaUrl ? (
-                        <Link
-                          href={f.facturaUrl}
-                          target="_blank"
-                          className="text-[#253745] hover:text-[#253745] font-medium hover:underline transition-colors"
-                        >
-                          Ver factura
-                        </Link>
-                      ) : (
-                        <span className="text-gray-400 text-sm">No disponible</span>
-                      )}
+                      <Link
+                        href={`/admin/ventas/facturas/${f.id}`}
+                        className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
+                      >
+                        Ver detalles
+                      </Link>
                     </td>
                   </tr>
                 ))}
