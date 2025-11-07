@@ -1,9 +1,14 @@
 import type { NextRequest } from 'next/server'
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const apiBase = process.env.NEXT_PUBLIC_API_URL
+const apiBase = process.env.NEXT_PUBLIC_API_URL
 
-  const res = await fetch(`${apiBase}/api/productos/${params.id}`, {
+type Params = { id: string }
+type Context = { params: Promise<Params> }
+
+export async function GET(req: NextRequest, context: Context) {
+  const { id } = await context.params
+
+  const res = await fetch(`${apiBase}/api/productos/${id}`, {
     method: 'GET',
     headers: {
       cookie: req.headers.get('cookie') ?? '',
@@ -20,12 +25,12 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   return new Response(text, { status: res.status, headers })
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
-  const apiBase = process.env.NEXT_PUBLIC_API_URL
+export async function PATCH(req: NextRequest, context: Context) {
+  const { id } = await context.params
 
   const body = await req.json().catch(() => ({}))
 
-  const res = await fetch(`${apiBase}/api/productos/${params.id}`, {
+  const res = await fetch(`${apiBase}/api/productos/${id}`, {
     method: 'PATCH',
     headers: {
       'content-type': 'application/json',
@@ -44,10 +49,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   return new Response(text, { status: res.status, headers })
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
-  const apiBase = process.env.NEXT_PUBLIC_API_URL
+export async function DELETE(req: NextRequest, context: Context) {
+  const { id } = await context.params
 
-  const res = await fetch(`${apiBase}/api/productos/${params.id}`, {
+  const res = await fetch(`${apiBase}/api/productos/${id}`, {
     method: 'DELETE',
     headers: {
       cookie: req.headers.get('cookie') ?? '',
@@ -63,3 +68,5 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 
   return new Response(text, { status: res.status, headers })
 }
+
+export const runtime = 'nodejs'
