@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
 import { logOk } from "@/lib/bitacora";
@@ -90,12 +91,15 @@ export default function ProductCard({
   return (
     <div className="rounded-2xl border border-[#9BA8AB] bg-white shadow-sm hover:shadow-lg transition overflow-hidden group flex flex-col">
       {/* Imagen */}
-      <div className="h-40 bg-[#CCD0CF] flex items-center justify-center overflow-hidden">
+      <div className="h-40 bg-[#CCD0CF] flex items-center justify-center overflow-hidden relative">
         {imagen ? (
-          <img
+          <Image
             src={imagen}
             alt={nombre}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            unoptimized
           />
         ) : (
           <span className="text-xs text-[#4A5C6A]">Imagen no disponible</span>
