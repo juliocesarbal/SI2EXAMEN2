@@ -62,13 +62,13 @@ export default function FacturasCliente() {
 
   const fetchFacturas = async (email: string) => {
     try {
-      const response = await fetch('/api/pagos/facturas', {
+      const response = await fetch('/api/pagos/mis-facturas', {
         credentials: 'include',
         cache: 'no-store',
       })
       if (response.ok) {
         const data = await response.json()
-        // El backend ya filtra por usuario si no es admin
+        // El backend siempre filtra por el usuario actual
         setFacturas(data)
       }
     } catch (error) {
