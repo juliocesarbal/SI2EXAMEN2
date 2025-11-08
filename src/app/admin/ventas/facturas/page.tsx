@@ -115,7 +115,7 @@ export default function FacturasAdmin() {
       idx + 1,
       f.orden.user_name,
       f.orden.user_email,
-      `Bs. ${f.monto.toFixed(2)}`,
+      `$ ${f.monto.toFixed(2)}`,
       f.estado === 'completed' ? 'Pagado' : 'Pendiente',
       new Date(f.created_at).toLocaleDateString(),
     ])
@@ -170,7 +170,7 @@ export default function FacturasAdmin() {
         <td>${f.orden.user_name}</td>
         <td>${f.orden.user_email}</td>
         <td>${new Date(f.created_at).toLocaleDateString()}</td>
-        <td style="text-align:right;">Bs. ${f.monto.toFixed(2)}</td>
+        <td style="text-align:right;">$ ${f.monto.toFixed(2)}</td>
         <td>${f.estado === 'completed' ? 'Pagado' : 'Pendiente'}</td>
       </tr>
     `
@@ -201,7 +201,7 @@ export default function FacturasAdmin() {
   <div class="summary">
     <p><strong>Total facturas:</strong> ${resumen.cantidad}</p>
     <p><strong>Pagadas:</strong> ${resumen.pagadas} | <strong>Pendientes:</strong> ${resumen.pendientes}</p>
-    <p><strong>Total general:</strong> Bs. ${resumen.total.toFixed(2)}</p>
+    <p><strong>Total general:</strong> $ ${resumen.total.toFixed(2)}</p>
   </div>
 
   <table>
@@ -221,7 +221,7 @@ export default function FacturasAdmin() {
     <tfoot>
       <tr>
         <td colspan="4" style="text-align:right;">TOTAL</td>
-        <td style="text-align:right;">Bs. ${resumen.total.toFixed(2)}</td>
+        <td style="text-align:right;">$ ${resumen.total.toFixed(2)}</td>
         <td></td>
       </tr>
     </tfoot>
@@ -338,7 +338,7 @@ export default function FacturasAdmin() {
                       {new Date(f.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                      Bs. {Number(f.monto).toFixed(2)}
+                      $ {Number(f.monto).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span

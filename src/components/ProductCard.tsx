@@ -117,7 +117,7 @@ export default function ProductCard({
         </h3>
 
         <p className="text-[#253745] font-bold text-base">
-          Bs. {precio.toFixed(2)}
+          ${precio.toFixed(2)}
         </p>
 
         {stockActual > 0 ? (

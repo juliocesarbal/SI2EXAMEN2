@@ -12,6 +12,7 @@ interface Producto {
   marca: { nombre: string };
   categoria: { nombre: string };
   precio?: number;
+  stockActual?: number;
 }
 
 interface Categoria {
@@ -149,6 +150,7 @@ export default function ProductosPage() {
                         precio={Number(p.precio) || 0}
                         imagen={p.imageUrl} // 👈 Aquí va directo desde S3
                         marca={p.marca?.nombre}
+                        stockActual={p.stockActual}
                       />
                     ))}
                   </div>

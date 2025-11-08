@@ -137,7 +137,7 @@ export default function FacturasCliente() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-lg font-semibold text-gray-900">
-                        Bs. {Number(factura.monto).toFixed(2)}
+                        ${Number(factura.monto).toFixed(2)}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

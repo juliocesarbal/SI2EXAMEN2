@@ -281,7 +281,7 @@ export default function HomePage() {
                       </p>
                     )}
                     <div className="text-[#253745] font-bold text-lg mt-2">
-                      Bs. {Number(producto.precio).toFixed(2)}
+                      ${Number(producto.precio).toFixed(2)}
                     </div>
                     {(producto.stockActual ?? 0) > 0 ? (
                       <>

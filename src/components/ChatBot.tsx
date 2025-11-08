@@ -230,7 +230,7 @@ export default function ChatBot() {
                             </p>
                             <div className="flex items-center justify-between gap-2 mt-2">
                               <span className="text-sm font-bold text-[#253745] shrink-0">
-                                Bs. {producto.precio.toFixed(2)}
+                                ${producto.precio.toFixed(2)}
                               </span>
                               <button
                                 onClick={() => addToCarrito(producto.id)}

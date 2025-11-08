@@ -192,10 +192,10 @@ export default function FacturaDetalleAdmin() {
                       {item.cantidad}
                     </td>
                     <td className="px-6 py-4 text-right text-gray-700">
-                      Bs. {Number(item.precio_unitario).toFixed(2)}
+                      $ {Number(item.precio_unitario).toFixed(2)}
                     </td>
                     <td className="px-6 py-4 text-right font-medium text-gray-900">
-                      Bs. {Number(item.subtotal).toFixed(2)}
+                      $ {Number(item.subtotal).toFixed(2)}
                     </td>
                   </tr>
                 ))}
@@ -210,11 +210,11 @@ export default function FacturaDetalleAdmin() {
             <div className="w-72">
               <div className="flex justify-between text-gray-700 mb-2">
                 <span>Subtotal:</span>
-                <span>Bs. {Number(factura.monto).toFixed(2)}</span>
+                <span>$ {Number(factura.monto).toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-xl font-bold text-gray-900 pt-3 border-t border-gray-300">
                 <span>Total:</span>
-                <span>Bs. {Number(factura.monto).toFixed(2)}</span>
+                <span>$ {Number(factura.monto).toFixed(2)}</span>
               </div>
             </div>
           </div>
