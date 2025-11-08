@@ -1,35 +1,28 @@
-import { NextRequest, NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+
+const api = process.env.NEXT_PUBLIC_API_URL
 
 type RouteContext = {
   params: { id: string } | Promise<{ id: string }>
 }
 
-export async function GET(request: NextRequest, context: RouteContext) {
+export async function GET(req: NextRequest, context: RouteContext) {
   const params = await context.params
   const { id } = params
 
-  try {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/'
+  const r = await fetch(`${api}/api/pagos/factura/${id}`, {
+    headers: {
+      'content-type': 'application/json',
+      cookie: req.headers.get('cookie') ?? '',
+    },
+    credentials: 'include',
+    cache: 'no-store',
+  })
 
-    const response = await fetch(`${backendUrl}api/pagos/factura/${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'cookie': request.headers.get('cookie') ?? '',
-      },
-      credentials: 'include',
-      cache: 'no-store',
-    })
-
-    const data = await response.json()
-    return NextResponse.json(data, { status: response.status })
-  } catch (error) {
-    console.error('Error en /api/pagos/factura/[id]:', error)
-    return NextResponse.json(
-      { error: 'Error al obtener factura' },
-      { status: 500 }
-    )
-  }
+  return new Response(await r.text(), {
+    status: r.status,
+    headers: { 'content-type': r.headers.get('content-type') ?? 'application/json' }
+  })
 }
 
 export const runtime = 'nodejs'

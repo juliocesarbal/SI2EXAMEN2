@@ -1,29 +1,21 @@
-import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export async function GET(request: NextRequest) {
-  try {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/'
+const api = process.env.NEXT_PUBLIC_API_URL
 
-    const response = await fetch(`${backendUrl}api/pagos/facturas`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'cookie': request.headers.get('cookie') ?? '',
-      },
-      credentials: 'include',
-      cache: 'no-store',
-    })
+export async function GET(req: NextRequest) {
+  const r = await fetch(`${api}/api/pagos/facturas`, {
+    headers: {
+      'content-type': 'application/json',
+      cookie: req.headers.get('cookie') ?? '',
+    },
+    credentials: 'include',
+    cache: 'no-store',
+  })
 
-    const data = await response.json()
-    return NextResponse.json(data, { status: response.status })
-  } catch (error) {
-    console.error('Error en /api/pagos/facturas:', error)
-    return NextResponse.json(
-      { error: 'Error al obtener facturas' },
-      { status: 500 }
-    )
-  }
+  return new Response(await r.text(), {
+    status: r.status,
+    headers: { 'content-type': r.headers.get('content-type') ?? 'application/json' }
+  })
 }
 
 export const runtime = 'nodejs'

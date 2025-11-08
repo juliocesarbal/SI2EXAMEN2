@@ -1,29 +1,24 @@
-import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
+const api = process.env.NEXT_PUBLIC_API_URL
 
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/'
+export async function POST(req: NextRequest) {
+  const body = await req.json().catch(() => ({}))
 
-    const response = await fetch(`${backendUrl}api/pagos/confirmar`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'cookie': request.headers.get('cookie') ?? '',
-      },
-      credentials: 'include',
-      body: JSON.stringify(body),
-    })
+  const r = await fetch(`${api}/api/pagos/confirmar`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+      cookie: req.headers.get('cookie') ?? '',
+    },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  })
 
-    const data = await response.json()
-    return NextResponse.json(data, { status: response.status })
-  } catch (error) {
-    console.error('Error en /api/pagos/confirmar:', error)
-    return NextResponse.json(
-      { error: 'Error al confirmar pago' },
-      { status: 500 }
-    )
-  }
+  return new Response(await r.text(), {
+    status: r.status,
+    headers: { 'content-type': r.headers.get('content-type') ?? 'application/json' }
+  })
 }
+
+export const runtime = 'nodejs'
