@@ -11,7 +11,7 @@ const resolveParams = async (context: Context): Promise<Params> =>
 export async function GET(req: NextRequest, context: Context) {
   const { id } = await resolveParams(context)
 
-  const r = await fetch(`${api}api/ordenes/${id}`, {
+  const r = await fetch(`${api}/api/ordenes/${id}`, {
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',
     cache: 'no-store',

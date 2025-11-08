@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     fechaFinal,
   });
 
-  const r = await fetch(`${api}api/users/clientes/by-date-range?${params.toString()}`, {
+  const r = await fetch(`${api}/api/users/clientes/by-date-range?${params.toString()}`, {
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',
     cache: 'no-store',

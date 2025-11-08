@@ -12,8 +12,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
-    const url = `${backendUrl}/chat-ai`
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
+    const url = `${backendUrl}/api/chat-ai`
 
     const response = await fetch(url, {
       method: 'POST',

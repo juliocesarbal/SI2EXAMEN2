@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 const api = process.env.NEXT_PUBLIC_API_URL
 
 export async function POST(req: NextRequest) {
-  const r = await fetch(`${api}api/carrito/checkout`, {
+  const r = await fetch(`${api}/api/carrito/checkout`, {
     method: 'POST',
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',

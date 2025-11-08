@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 const api = process.env.NEXT_PUBLIC_API_URL
 
 export async function GET(req: NextRequest) {
-  const r = await fetch(`${api}api/carrito`, {
+  const r = await fetch(`${api}/api/carrito`, {
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',
     cache: 'no-store',
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}))
-  const r = await fetch(`${api}api/carrito/add`, {
+  const r = await fetch(`${api}/api/carrito/add`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const r = await fetch(`${api}api/carrito/clear`, {
+  const r = await fetch(`${api}/api/carrito/clear`, {
     method: 'DELETE',
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',

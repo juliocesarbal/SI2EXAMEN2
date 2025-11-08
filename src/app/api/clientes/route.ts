@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   params.append('size', size);
   if (status) params.append('status', status);
 
-  const r = await fetch(`${api}api/users/clientes?${params.toString()}`, {
+  const r = await fetch(`${api}/api/users/clientes?${params.toString()}`, {
     headers: { cookie: req.headers.get('cookie') ?? '' },
     credentials: 'include',
     cache: 'no-store',
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     roles: ['CLIENTE']
   };
 
-  const r = await fetch(`${api}api/users/internal`, {
+  const r = await fetch(`${api}/api/users/internal`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
