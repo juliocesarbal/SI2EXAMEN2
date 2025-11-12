@@ -169,7 +169,7 @@ export default function PrediccionesDashboard() {
     if (!hasModel) return
 
     try {
-      const startDate = addDays(new Date(), 1)
+      const startDate = new Date() // Desde hoy, no desde mañana
       const endDate = addDays(new Date(), predictionDays)
 
       const params = new URLSearchParams({
