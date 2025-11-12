@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   LineChart,
   Line,
@@ -70,11 +70,7 @@ export default function PrediccionesDashboard() {
   // Training state
   const [training, setTraining] = useState(false)
 
-  useEffect(() => {
-    loadDashboardData()
-  }, [period, daysToShow, predictionDays])
-
-  const loadDashboardData = async () => {
+  const loadDashboardData = useCallback(async () => {
     setLoading(true)
     setError('')
 
@@ -97,7 +93,12 @@ export default function PrediccionesDashboard() {
     } finally {
       setLoading(false)
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [period, daysToShow, predictionDays])
+
+  useEffect(() => {
+    loadDashboardData()
+  }, [loadDashboardData])
 
   const loadModelStatus = async () => {
     try {
@@ -321,7 +322,7 @@ export default function PrediccionesDashboard() {
 
       {!hasModel && (
         <div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg">
-          No hay modelo entrenado. Haz clic en "Reentrenar Modelo" para crear uno.
+          No hay modelo entrenado. Haz clic en &quot;Reentrenar Modelo&quot; para crear uno.
         </div>
       )}
 
