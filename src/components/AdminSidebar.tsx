@@ -37,6 +37,12 @@ const IconCog = () => (
     <path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.5-2.3.7a7 7 0 0 0-1.7-1l-.4-2.4H11l-.4 2.4a7 7 0 0 0-1.7 1L6.6 6l-2 3.5L6.5 11a7 7 0 0 0 0 2l-2 1.5 2 3.5 2.3-.7a7 7 0 0 0 1.7 1l.4 2.4h3.2l.4-2.4a7 7 0 0 0 1.7-1l2.3.7 2-3.5-2-1.5c.1-.3.1-.7.1-1Z" stroke="currentColor" strokeWidth="1.2" />
   </svg>
 );
+const IconTrendingUp = () => (
+  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M22 7l-8.5 8.5-5-5L2 17" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M16 7h6v6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 const SECTIONS: NavSection[] = [
   {
@@ -68,6 +74,14 @@ const SECTIONS: NavSection[] = [
     items: [
       { label: "Reporte de ventas", href: "/admin/reportes/ventas" },
       { label: "Reporte de inventario", href: "/admin/reportes/inventario" },
+    ],
+  },
+  {
+    id: "pred",
+    title: "Predicción de Ventas",
+    icon: <IconTrendingUp />,
+    items: [
+      { label: "Dashboard", href: "/admin/predicciones" },
     ],
   },
  ];
