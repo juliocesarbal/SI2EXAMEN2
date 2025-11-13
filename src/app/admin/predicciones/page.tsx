@@ -102,19 +102,28 @@ export default function PrediccionesDashboard() {
 
   const loadModelStatus = async () => {
     try {
+      console.log('🔍 Loading model status...')
       const res = await fetch('/api/analytics/model/status', {
         credentials: 'include',
       })
 
       if (res.ok) {
         const data = await res.json()
+        console.log('✅ Model status:', {
+          has_model: data.has_model,
+          model_exists_on_disk: data.model_exists_on_disk,
+          predictions_count: data.predictions_count,
+          metrics: data.model_metrics
+        })
         setHasModel(data.has_model)
         if (data.model_metrics) {
           setModelMetrics(data.model_metrics)
         }
+      } else {
+        console.error('❌ Failed to load model status:', res.status)
       }
     } catch (err) {
-      console.error('Error loading model status:', err)
+      console.error('❌ Error loading model status:', err)
     }
   }
 
@@ -166,7 +175,10 @@ export default function PrediccionesDashboard() {
   }
 
   const loadPredictions = async () => {
-    if (!hasModel) return
+    if (!hasModel) {
+      console.log('⚠️ No model found, skipping predictions load')
+      return
+    }
 
     try {
       const startDate = new Date() // Desde hoy, no desde mañana
@@ -177,16 +189,32 @@ export default function PrediccionesDashboard() {
         end_date: endDate.toISOString().split('T')[0],
       })
 
-      const res = await fetch(`/api/analytics/predictions?${params}`, {
+      const url = `/api/analytics/predictions?${params}`
+      console.log('📡 Fetching predictions from:', url)
+      console.log('  Start date:', startDate.toISOString().split('T')[0])
+      console.log('  End date:', endDate.toISOString().split('T')[0])
+
+      const res = await fetch(url, {
         credentials: 'include',
       })
 
+      console.log('📡 Response status:', res.status, res.statusText)
+
       if (res.ok) {
         const data = await res.json()
+        console.log('✅ Predictions received:', {
+          success: data.success,
+          count: data.count,
+          dataLength: data.data?.length || 0,
+          sample: data.data?.slice(0, 2)
+        })
         setPredictions(data.data || [])
+      } else {
+        const errorData = await res.json().catch(() => ({}))
+        console.error('❌ Failed to load predictions:', res.status, errorData)
       }
     } catch (err) {
-      console.error('Error loading predictions:', err)
+      console.error('❌ Error loading predictions:', err)
     }
   }
 
@@ -226,9 +254,6 @@ export default function PrediccionesDashboard() {
   const avgSales = historicalSales.length > 0 ? totalSales / historicalSales.length : 0
   const totalOrders = historicalSales.reduce((sum, item) => sum + item.num_ordenes, 0)
 
-  const totalPredicted = predictions.reduce((sum, p) => sum + parseFloat(String(p.predicted_amount)), 0)
-  const growthRate = totalSales > 0 ? ((totalPredicted / totalSales) - 1) * 100 : 0
-
   // Aggregate predictions by date
   const predictionsByDate = predictions.reduce((acc, pred) => {
     const date = pred.prediction_date
@@ -244,6 +269,29 @@ export default function PrediccionesDashboard() {
     fecha: item.fecha,
     total_predicho: item.total_predicho,
   }))
+
+  // Calculate projected totals and growth rate
+  // Sum the daily totals (already aggregated by date above)
+  const totalPredicted = predictionsChartData.reduce((sum, item) => sum + item.total_predicho, 0)
+  const avgPredicted = predictionsChartData.length > 0 ? totalPredicted / predictionsChartData.length : 0
+
+  // Calculate growth rate based on average daily sales comparison
+  // This compares the average predicted daily sales vs average historical daily sales
+  const growthRate = avgSales > 0 ? ((avgPredicted / avgSales) - 1) * 100 : 0
+
+  // Debug logging
+  console.log('📊 Dashboard Metrics:', {
+    historicalDays: daysToShow,
+    predictionDays: predictionDays,
+    totalSales,
+    avgSales,
+    totalOrders,
+    predictionsCount: predictions.length,
+    predictionsByDateCount: predictionsChartData.length,
+    totalPredicted,
+    avgPredicted,
+    growthRate: `${growthRate.toFixed(1)}%`
+  })
 
   // Aggregate predictions by category
   const predictionsByCategory = predictions.reduce((acc, pred) => {
@@ -337,21 +385,35 @@ export default function PrediccionesDashboard() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <p className="text-sm text-gray-600 mb-1">Promedio Diario</p>
           <p className="text-3xl font-bold text-gray-900">${avgSales.toFixed(2)}</p>
-          <p className="text-sm text-gray-500 mt-1">por día</p>
+          <p className="text-sm text-gray-500 mt-1">ventas/día histórico</p>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <p className="text-sm text-gray-600 mb-1">Proyección ({predictionDays}d)</p>
           <p className="text-3xl font-bold text-blue-600">${totalPredicted.toFixed(2)}</p>
-          <p className="text-sm text-gray-500 mt-1">estimado</p>
+          <p className="text-sm text-gray-500 mt-1">
+            {predictionsChartData.length > 0
+              ? `≈ $${avgPredicted.toFixed(2)}/día estimado`
+              : 'Sin predicciones disponibles'}
+          </p>
         </div>
 
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <p className="text-sm text-gray-600 mb-1">Crecimiento Esperado</p>
-          <p className={`text-3xl font-bold ${growthRate >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {growthRate >= 0 ? '+' : ''}{growthRate.toFixed(1)}%
+          <p className={`text-3xl font-bold ${
+            predictionsChartData.length === 0
+              ? 'text-gray-400'
+              : growthRate >= 0 ? 'text-green-600' : 'text-red-600'
+          }`}>
+            {predictionsChartData.length === 0
+              ? '-'
+              : `${growthRate >= 0 ? '+' : ''}${growthRate.toFixed(1)}%`}
           </p>
-          <p className="text-sm text-gray-500 mt-1">vs período anterior</p>
+          <p className="text-sm text-gray-500 mt-1">
+            {predictionsChartData.length > 0
+              ? 'vs promedio diario histórico'
+              : 'Entrena el modelo primero'}
+          </p>
         </div>
       </div>
 
