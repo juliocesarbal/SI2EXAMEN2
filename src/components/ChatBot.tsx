@@ -2,6 +2,8 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Swal from 'sweetalert2'
+import { useSpeechRecognition } from '@/hooks/useSpeechRecognition'
+import { Mic, MicOff } from 'lucide-react'
 
 interface Message {
   id: string
@@ -36,6 +38,17 @@ export default function ChatBot() {
   const router = useRouter()
   const pathname = usePathname()
 
+  // Hook de reconocimiento de voz
+  const {
+    transcript,
+    listening,
+    supported: voiceSupported,
+    error: voiceError,
+    startListening,
+    stopListening,
+    resetTranscript,
+  } = useSpeechRecognition()
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
@@ -49,17 +62,59 @@ export default function ChatBot() {
     setIsOpen(false)
   }, [pathname])
 
+  // Actualizar el input cuando el transcript cambie
+  useEffect(() => {
+    if (transcript) {
+      setInputMessage(transcript)
+    }
+  }, [transcript])
+
+  // Mostrar error de voz con SweetAlert
+  useEffect(() => {
+    if (voiceError) {
+      Swal.fire({
+        title: 'Error de Voz',
+        text: voiceError,
+        icon: 'warning',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+      })
+    }
+  }, [voiceError])
+
   // No mostrar el chat en rutas de administración
   if (pathname?.startsWith('/admin')) return null
 
+  // Manejar botón de voz
+  const handleVoiceToggle = () => {
+    if (listening) {
+      stopListening()
+    } else {
+      resetTranscript()
+      setInputMessage('')
+      startListening()
+    }
+  }
+
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return
+
+    // Detener reconocimiento de voz si está activo
+    if (listening) {
+      stopListening()
+    }
+    resetTranscript()
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
       content: inputMessage,
     }
+
+    // Guardar el mensaje del usuario para detectar comandos
+    const userMessageContent = inputMessage.toLowerCase()
 
     setMessages(prev => [...prev, userMessage])
     setInputMessage('')
@@ -88,6 +143,59 @@ export default function ChatBot() {
       }
 
       setMessages(prev => [...prev, assistantMessage])
+
+      // ✨ DETECCIÓN DE COMANDOS DE AGREGAR AL CARRITO
+      // Detectar si el usuario usó comandos de "agregar"
+      const addCommands = [
+        'agregar',
+        'agregame',
+        'agregalo',
+        'agregala',
+        'añadir',
+        'añademe',
+        'añadelo',
+        'añadela',
+        'meteme',
+        'metelo',
+        'metela',
+        'meter',
+        'poner',
+        'poneme',
+        'ponelo',
+        'ponela',
+        'quiero',
+        'comprar',
+        'llevarlo',
+        'llevame'
+      ]
+
+      const hasAddCommand = addCommands.some(cmd => userMessageContent.includes(cmd))
+
+      console.log('🔍 Detección de comandos:', {
+        userMessage: userMessageContent,
+        hasAddCommand,
+        productosCount: data.productos?.length || 0,
+        productos: data.productos
+      })
+
+      // Si hay exactamente 1 producto y el usuario usó un comando de agregar
+      if (hasAddCommand && data.productos && data.productos.length === 1) {
+        const producto = data.productos[0]
+        console.log('🛒 Auto-agregando producto al carrito:', {
+          id: producto.id,
+          nombre: producto.nombre,
+          precio: producto.precio
+        })
+
+        // Pequeño delay para que el usuario vea primero la respuesta del chatbot
+        setTimeout(() => {
+          addToCarrito(producto.id)
+        }, 500)
+      } else if (hasAddCommand && data.productos && data.productos.length > 1) {
+        console.log('⚠️ No se auto-agregó: múltiples productos encontrados')
+      } else if (hasAddCommand && (!data.productos || data.productos.length === 0)) {
+        console.log('⚠️ No se auto-agregó: no hay productos en la respuesta')
+      }
     } catch (error) {
       console.error('Error:', error)
       setMessages(prev => [
@@ -112,12 +220,15 @@ export default function ChatBot() {
   }
 
   const addToCarrito = async (productoId: number) => {
+    console.log('📥 addToCarrito llamado con productoId:', productoId)
     setAddingToCart(productoId)
 
     try {
+      console.log('🔐 Verificando autenticación...')
       const authResponse = await fetch('/api/me', { credentials: 'include' })
 
       if (!authResponse.ok) {
+        console.warn('❌ Usuario no autenticado')
         Swal.fire({
           title: 'Debes iniciar sesión',
           text: 'Para agregar productos al carrito, inicia sesión primero',
@@ -130,14 +241,23 @@ export default function ChatBot() {
         return
       }
 
+      console.log('✅ Usuario autenticado, agregando al carrito...')
+      const requestBody = { productoId, cantidad: 1 }
+      console.log('📦 Request body:', requestBody)
+
       const response = await fetch('/api/carrito', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ productoId, cantidad: 1 }),
+        body: JSON.stringify(requestBody),
       })
 
+      console.log('📡 Response status:', response.status)
+
       if (response.ok) {
+        const responseData = await response.json()
+        console.log('✅ Producto agregado exitosamente:', responseData)
+
         Swal.fire({
           title: '¡Agregado!',
           text: 'Producto agregado al carrito',
@@ -147,10 +267,12 @@ export default function ChatBot() {
         })
         window.dispatchEvent(new Event('carrito:changed'))
       } else {
-        throw new Error('Error al agregar')
+        const errorData = await response.text()
+        console.error('❌ Error al agregar:', response.status, errorData)
+        throw new Error(`Error ${response.status}: ${errorData}`)
       }
     } catch (error) {
-      console.error('Error:', error)
+      console.error('❌ Error en addToCarrito:', error)
       Swal.fire('Error', 'No se pudo agregar al carrito', 'error')
     } finally {
       setAddingToCart(null)
@@ -266,6 +388,19 @@ export default function ChatBot() {
 
           {/* Input */}
           <div className="p-3 sm:p-4 border-t border-[#9BA8AB] bg-white rounded-b-2xl">
+            {/* Mostrar indicador de escucha */}
+            {listening && (
+              <div className="mb-2 flex items-center gap-2 text-xs text-[#11212D] bg-red-50 border border-red-200 rounded-lg p-2 animate-pulse">
+                <Mic className="w-4 h-4 text-red-600" />
+                <span className="font-medium">Escuchando... Habla ahora</span>
+                <div className="flex gap-1 ml-auto">
+                  <div className="w-1 h-3 bg-red-600 rounded-full animate-bounce"></div>
+                  <div className="w-1 h-3 bg-red-600 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                  <div className="w-1 h-3 bg-red-600 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                </div>
+              </div>
+            )}
+
             <form
               onSubmit={e => {
                 e.preventDefault()
@@ -277,11 +412,35 @@ export default function ChatBot() {
                 value={inputMessage}
                 onChange={e => setInputMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="¿Qué productos buscas?"
+                placeholder={listening ? 'Habla ahora...' : '¿Qué productos buscas?'}
                 className="flex-1 resize-none border border-[#9BA8AB] rounded-lg p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#253745] max-h-32 min-h-[40px]"
                 rows={2}
-                disabled={isLoading}
+                disabled={isLoading || listening}
               />
+
+              {/* Botón de micrófono (solo si está soportado) */}
+              {voiceSupported && (
+                <button
+                  type="button"
+                  onClick={handleVoiceToggle}
+                  disabled={isLoading}
+                  className={`px-3 py-2 rounded-lg transition ${
+                    listening
+                      ? 'bg-red-600 hover:bg-red-700 text-white animate-pulse'
+                      : 'bg-[#4A5C6A] hover:bg-[#253745] text-white'
+                  } disabled:bg-[#9BA8AB] disabled:cursor-not-allowed`}
+                  aria-label={listening ? 'Detener grabación' : 'Grabar mensaje de voz'}
+                  title={listening ? 'Click para detener' : 'Click para hablar'}
+                >
+                  {listening ? (
+                    <MicOff className="w-5 h-5" />
+                  ) : (
+                    <Mic className="w-5 h-5" />
+                  )}
+                </button>
+              )}
+
+              {/* Botón de enviar */}
               <button
                 type="submit"
                 disabled={!inputMessage.trim() || isLoading}
@@ -293,6 +452,20 @@ export default function ChatBot() {
                 </svg>
               </button>
             </form>
+
+            {/* Mensaje de ayuda para voz */}
+            {voiceSupported && !listening && (
+              <p className="text-[10px] sm:text-xs text-[#4A5C6A] mt-2 text-center">
+                💡 Tip: Haz click en el micrófono para hablar en vez de escribir
+              </p>
+            )}
+
+            {!voiceSupported && (
+              <p className="text-[10px] sm:text-xs text-[#9BA8AB] mt-2 text-center">
+                ⚠️ Tu navegador no soporta reconocimiento de voz
+              </p>
+            )}
+
             {/* espacio seguro para notch en móviles */}
             <div className="pt-[env(safe-area-inset-bottom)]" />
           </div>
