@@ -181,7 +181,12 @@ export default function AdminVoiceAssistant() {
 
         const data = await response.json();
 
-        console.log("✅ Respuesta recibida:", data);
+        console.log("✅ Respuesta recibida desde backend:", {
+          transcript: data.transcript,
+          correctedCommand: data.correctedCommand,
+          response: data.response,
+          reportType: data.reportType
+        });
 
         // Show corrected transcript
         if (data.correctedCommand) {
@@ -196,11 +201,20 @@ export default function AdminVoiceAssistant() {
         };
         setMessages((prev) => [...prev, userMessage]);
 
+        // Build assistant response with corrected command if available
+        let assistantContent = data.response || "Comando procesado exitosamente";
+
+        // If there's a corrected command different from transcript, show it
+        if (data.correctedCommand && data.transcript &&
+            data.correctedCommand.toLowerCase() !== data.transcript.toLowerCase()) {
+          assistantContent = `📝 Interpretado como: "${data.correctedCommand}"\n\n${assistantContent}`;
+        }
+
         // Add assistant response
         const assistantMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: "assistant",
-          content: data.response || "Comando procesado exitosamente",
+          content: assistantContent,
         };
         setMessages((prev) => [...prev, assistantMessage]);
 
@@ -263,6 +277,14 @@ export default function AdminVoiceAssistant() {
     setIsProcessing(true);
     setError(null);
 
+    // Add user message IMMEDIATELY with the command that was sent
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      role: "user",
+      content: commandText,
+    };
+    setMessages((prev) => [...prev, userMessage]);
+
     try {
       const requestBody = { command: commandText };
       console.log("[Frontend] Sending request with body:", requestBody);
@@ -289,24 +311,32 @@ export default function AdminVoiceAssistant() {
 
       const data = await response.json();
 
+      console.log("[Frontend] Response data:", {
+        correctedCommand: data.correctedCommand,
+        response: data.response,
+        transcript: data.transcript,
+        reportType: data.reportType
+      });
+
       // Show the corrected transcript if available
       if (data.correctedCommand) {
         setCorrectedTranscript(data.correctedCommand);
       }
 
-      // Add user message with the command that was sent
-      const userMessage: Message = {
-        id: Date.now().toString(),
-        role: "user",
-        content: commandText,
-      };
-      setMessages((prev) => [...prev, userMessage]);
+      // Build assistant response with corrected command if available
+      let assistantContent = data.response || "Comando procesado exitosamente";
+
+      // If there's a corrected command different from the original, show it
+      if (data.correctedCommand && commandText &&
+          data.correctedCommand.toLowerCase() !== commandText.toLowerCase()) {
+        assistantContent = `📝 Interpretado como: "${data.correctedCommand}"\n\n${assistantContent}`;
+      }
 
       // Add assistant response
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: data.response || "Comando procesado exitosamente",
+        content: assistantContent,
       };
       setMessages((prev) => [...prev, assistantMessage]);
 
@@ -355,7 +385,7 @@ export default function AdminVoiceAssistant() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-gradient-to-br from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white rounded-full p-4 sm:p-5 shadow-lg transition-transform active:scale-95 hover:shadow-xl"
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 bg-gradient-to-br from-[#253745] to-[#11212D] hover:from-[#11212D] hover:to-[#06141B] text-white rounded-full p-4 sm:p-5 shadow-lg transition-transform active:scale-95 hover:shadow-xl"
           aria-label="Abrir asistente de voz"
         >
           <svg
@@ -378,13 +408,13 @@ export default function AdminVoiceAssistant() {
       {/* Assistant panel - responsive design */}
       {isOpen && (
         <div
-          className="fixed z-50 right-3 left-3 bottom-3 sm:left-auto sm:right-6 sm:bottom-6 w-auto sm:w-96 max-w-md mx-auto h-[70vh] sm:h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col border border-emerald-200 overflow-hidden"
+          className="fixed z-50 right-3 left-3 bottom-3 sm:left-auto sm:right-6 sm:bottom-6 w-auto sm:w-96 max-w-md mx-auto h-[70vh] sm:h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col border border-[#9BA8AB] overflow-hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Asistente de voz"
         >
           {/* Header */}
-          <div className="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white p-3 sm:p-4 rounded-t-2xl flex items-center justify-between">
+          <div className="bg-gradient-to-r from-[#253745] to-[#11212D] text-white p-3 sm:p-4 rounded-t-2xl flex items-center justify-between">
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-9 h-9 sm:w-10 sm:h-10 bg-white/20 rounded-full flex items-center justify-center shrink-0">
                 🎙️
@@ -393,7 +423,7 @@ export default function AdminVoiceAssistant() {
                 <h3 className="font-semibold leading-tight truncate">
                   Asistente de Voz Admin
                 </h3>
-                <p className="text-[11px] sm:text-xs text-emerald-100">
+                <p className="text-[11px] sm:text-xs text-[#CCD0CF]">
                   Genera reportes por voz
                 </p>
               </div>
@@ -424,7 +454,7 @@ export default function AdminVoiceAssistant() {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-emerald-50/30">
+          <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-[#CCD0CF]/20">
             {messages.map((msg) => (
               <div
                 key={msg.id}
@@ -435,8 +465,8 @@ export default function AdminVoiceAssistant() {
                 <div
                   className={`max-w-[92%] sm:max-w-[80%] text-[13px] sm:text-sm leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-emerald-600 text-white"
-                      : "bg-white border border-emerald-200"
+                      ? "bg-[#253745] text-white"
+                      : "bg-white border border-[#9BA8AB]"
                   } rounded-2xl p-2.5 sm:p-3 shadow-sm`}
                 >
                   <p className="whitespace-pre-wrap break-words">{msg.content}</p>
@@ -446,15 +476,15 @@ export default function AdminVoiceAssistant() {
 
             {isProcessing && (
               <div className="flex justify-start">
-                <div className="bg-white border border-emerald-200 rounded-2xl p-3 shadow-sm">
+                <div className="bg-white border border-[#9BA8AB] rounded-2xl p-3 shadow-sm">
                   <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-[#4A5C6A] rounded-full animate-bounce"></div>
                     <div
-                      className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-[#4A5C6A] rounded-full animate-bounce"
                       style={{ animationDelay: "0.1s" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-emerald-600 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-[#4A5C6A] rounded-full animate-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
                   </div>
@@ -516,7 +546,7 @@ export default function AdminVoiceAssistant() {
           )}
 
           {/* Controls */}
-          <div className="p-3 sm:p-4 bg-white border-t border-emerald-200 rounded-b-2xl">
+          <div className="p-3 sm:p-4 bg-white border-t border-[#9BA8AB] rounded-b-2xl">
             {/* Text input area */}
             {!isRecording && (
               <form
@@ -542,14 +572,14 @@ export default function AdminVoiceAssistant() {
                     }
                   }}
                   placeholder="Escribe tu comando: 'genera reporte de alertas en PDF'"
-                  className="flex-1 resize-none border border-emerald-300 rounded-lg p-2 text-[13px] sm:text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 max-h-24 min-h-[40px]"
+                  className="flex-1 resize-none border border-[#9BA8AB] rounded-lg p-2 text-[13px] sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#253745] max-h-24 min-h-[40px]"
                   rows={2}
                   disabled={isProcessing}
                 />
                 <button
                   type="submit"
                   disabled={!inputText.trim() || isProcessing}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed shrink-0"
+                  className="bg-[#11212D] hover:bg-[#06141B] text-white px-4 py-2 rounded-lg transition disabled:bg-[#4A5C6A] disabled:cursor-not-allowed shrink-0"
                   aria-label="Enviar comando"
                 >
                   <svg
@@ -574,12 +604,12 @@ export default function AdminVoiceAssistant() {
             <div className="flex gap-2 items-center">
               {!isRecording && !isProcessing ? (
                 <>
-                  <div className="flex-1 text-[11px] sm:text-xs text-gray-500 text-center">
+                  <div className="flex-1 text-[11px] sm:text-xs text-[#4A5C6A] text-center">
                     o usa el micrófono
                   </div>
                   <button
                     onClick={startRecording}
-                    className="bg-emerald-600 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-emerald-700 active:bg-emerald-800 transition flex items-center gap-2 shrink-0"
+                    className="bg-[#11212D] text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-[#06141B] active:bg-[#253745] transition flex items-center gap-2 shrink-0"
                     aria-label="Iniciar grabación"
                   >
                     <svg
@@ -616,8 +646,8 @@ export default function AdminVoiceAssistant() {
                   Detener y Procesar
                 </button>
               ) : (
-                <div className="flex-1 text-center text-sm text-gray-500 flex items-center justify-center gap-2">
-                  <div className="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+                <div className="flex-1 text-center text-sm text-[#4A5C6A] flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-[#253745] border-t-transparent rounded-full animate-spin"></div>
                   Procesando con Gemini...
                 </div>
               )}

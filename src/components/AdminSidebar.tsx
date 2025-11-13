@@ -68,15 +68,6 @@ const SECTIONS: NavSection[] = [
     ],
   },
   {
-    id: "rep",
-    title: "Gestión de Reportes",
-    icon: <IconChart />,
-    items: [
-      { label: "Reporte de ventas", href: "/admin/reportes/ventas" },
-      { label: "Reporte de inventario", href: "/admin/reportes/inventario" },
-    ],
-  },
-  {
     id: "pred",
     title: "Predicción de Ventas",
     icon: <IconTrendingUp />,
