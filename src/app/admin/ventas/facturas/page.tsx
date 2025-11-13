@@ -47,6 +47,10 @@ export default function FacturasAdmin() {
   const [fechaInicio, setFechaInicio] = useState('')
   const [fechaFin, setFechaFin] = useState('')
 
+  // Paginación
+  const [paginaActual, setPaginaActual] = useState(1)
+  const facturasPorPagina = 10
+
   // ✅ FETCH estilo Bitácora
   useEffect(() => {
     let cancel = false
@@ -92,18 +96,29 @@ export default function FacturasAdmin() {
 
   // ✅ FILTRO POR FECHA
   const aplicarFiltro = () => {
+    setPaginaActual(1) // Resetear a primera página al filtrar
+
     if (!fechaInicio && !fechaFin) {
       setFilteredFacturas(facturas)
       return
     }
-    const inicio = fechaInicio ? new Date(fechaInicio) : null
-    const fin = fechaFin ? new Date(fechaFin) : null
+
     const filtradas = facturas.filter((f) => {
-      const d = new Date(f.created_at)
-      if (inicio && d < inicio) return false
-      if (fin && d > fin) return false
+      const fechaFactura = new Date(f.created_at).setHours(0, 0, 0, 0)
+
+      if (fechaInicio) {
+        const inicio = new Date(fechaInicio).setHours(0, 0, 0, 0)
+        if (fechaFactura < inicio) return false
+      }
+
+      if (fechaFin) {
+        const fin = new Date(fechaFin).setHours(23, 59, 59, 999)
+        if (fechaFactura > fin) return false
+      }
+
       return true
     })
+
     setFilteredFacturas(filtradas)
   }
 
@@ -234,6 +249,20 @@ export default function FacturasAdmin() {
     saveAs(blob, 'reporte_facturas.html')
   }
 
+  // Cálculos de paginación
+  const totalPaginas = Math.ceil(filteredFacturas.length / facturasPorPagina)
+  const indiceInicio = (paginaActual - 1) * facturasPorPagina
+  const indiceFin = indiceInicio + facturasPorPagina
+  const facturasPaginadas = filteredFacturas.slice(indiceInicio, indiceFin)
+
+  const irPaginaAnterior = () => {
+    if (paginaActual > 1) setPaginaActual(paginaActual - 1)
+  }
+
+  const irPaginaSiguiente = () => {
+    if (paginaActual < totalPaginas) setPaginaActual(paginaActual + 1)
+  }
+
   if (loading) return <div className="p-8 text-center">Cargando facturas...</div>
 
   return (
@@ -326,7 +355,7 @@ export default function FacturasAdmin() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {filteredFacturas.map((f) => (
+                {facturasPaginadas.map((f) => (
                   <tr key={f.id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
                       {f.orden.user_name}
@@ -364,6 +393,35 @@ export default function FacturasAdmin() {
               </tbody>
             </table>
           </div>
+
+          {/* Controles de paginación */}
+          {totalPaginas > 1 && (
+            <div className="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+              <div className="text-sm text-gray-600">
+                Mostrando {indiceInicio + 1} - {Math.min(indiceFin, filteredFacturas.length)} de{' '}
+                {filteredFacturas.length} facturas
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={irPaginaAnterior}
+                  disabled={paginaActual === 1}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Anterior
+                </button>
+                <span className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-50 border border-gray-300 rounded-lg">
+                  Página {paginaActual} de {totalPaginas}
+                </span>
+                <button
+                  onClick={irPaginaSiguiente}
+                  disabled={paginaActual === totalPaginas}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
